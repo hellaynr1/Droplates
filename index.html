@@ -211,6 +211,15 @@
     .mock-services { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
     .mock-services .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
 
+    .mock-digital { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr auto; }
+    .mock-digital .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
+
+    .mock-drop { grid-template-rows: auto 1fr auto; }
+    .mock-drop .pill { justify-self: center; width: 50%; }
+
+    .mock-subscription { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
+    .mock-subscription .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
+
     .card-body { padding: 24px; }
 
     .card-body h3 {
@@ -423,6 +432,45 @@
               <h3>Services and bundles</h3>
               <p>Packages, pricing tiers and a booking or quote button in place of a cart. Built for drop service businesses.</p>
               <span class="tag">Drop service</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview">
+              <div class="mock mock-digital">
+                <i></i><i></i><i></i><i></i><i class="pill"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Digital products</h3>
+              <p>Downloads, courses and presets with instant delivery. No shipping, and a download page in place of a delivery step.</p>
+              <span class="tag">No shipping</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview">
+              <div class="mock mock-drop">
+                <i class="bar"></i><i class="hero fill"></i><i class="pill"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Pre-order and drop</h3>
+              <p>A countdown, a waitlist and limited stock for timed releases. Built around the Droplates idea of launching drops.</p>
+              <span class="tag">Limited releases</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview">
+              <div class="mock mock-subscription">
+                <i></i><i class="fill"></i><i></i><i class="pill"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Subscription</h3>
+              <p>Recurring plans, subscribe-and-save and an account page. Built around plan pricing instead of one-off purchases.</p>
+              <span class="tag">Recurring</span>
             </div>
           </article>
         </div>
