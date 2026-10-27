@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Droplates — Shopify themes</title>
+  <meta name="description" content="Premium Shopify themes for dropshipping, drop service and clothing brands. Join the waitlist.">
+  <style>
+    :root {
+      --bg: #000;
+      --surface: #0b0b0b;
+      --line: #1f1f1f;
+      --text: #f5f5f5;
+      --muted: #8a8a8a;
+      --accent: #fff;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 16px;
+    }
+
+    .wordmark {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 1.125rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.88; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 96px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+      max-width: 900px;
+      margin: 0 auto 24px;
+    }
+
+    .lede {
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Sections */
+    section { padding: 96px 0; border-top: 1px solid var(--line); }
+
+    .section-head { margin-bottom: 48px; max-width: 640px; }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      font-weight: 700;
+    }
+
+    .section-sub { color: var(--muted); margin-top: 12px; }
+
+    /* Theme niches */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview {
+      aspect-ratio: 4 / 3;
+      background: #050505;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Placeholder wireframe, not a real theme screenshot */
+    .preview::before,
+    .preview::after {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      border: 1px dashed #2a2a2a;
+      border-radius: 8px;
+    }
+
+    .preview::before { top: 14%; height: 18%; }
+    .preview::after { top: 40%; bottom: 14%; }
+
+    .preview span {
+      position: relative;
+      z-index: 1;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5c5c5c;
+    }
+
+    .card-body { padding: 24px; }
+
+    .card-body h3 {
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .card-body p { color: var(--muted); font-size: 0.9375rem; }
+
+    .tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+
+    /* Included */
+    .included {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .included li {
+      list-style: none;
+      padding: 28px 24px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .included li:last-child { border-right: none; }
+
+    .included strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .included span { color: var(--muted); font-size: 0.9375rem; }
+
+    /* Pricing */
+    .pricing-box {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .pricing-box .big {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .pricing-box p { color: var(--muted); }
+
+    /* Waitlist */
+    .waitlist {
+      text-align: center;
+    }
+
+    .waitlist form {
+      display: flex;
+      gap: 8px;
+      max-width: 480px;
+      margin: 32px auto 0;
+    }
+
+    .waitlist input {
+      flex: 1;
+      min-width: 0;
+      height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.9375rem;
+    }
+
+    .waitlist input::placeholder { color: #555; }
+    .waitlist input:focus { outline: 1px solid #444; }
+
+    .waitlist .fine {
+      margin-top: 16px;
+      font-size: 0.8125rem;
+      color: #666;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0;
+      font-size: 0.8125rem;
+      color: #666;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Phone */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding: 80px 0 64px; }
+      section { padding: 72px 0; }
+      .waitlist form { flex-direction: column; }
+      .waitlist .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="#top" class="wordmark">Droplates</a>
+      <nav class="nav-links">
+        <a href="#themes">Themes</a>
+        <a href="#included">Included</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <a href="#waitlist" class="btn">Join waitlist</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <div class="hero">
+      <div class="wrap">
+        <span class="eyebrow">Shopify themes · Coming soon</span>
+        <h1>Shopify themes built for how you sell.</h1>
+        <p class="lede">Premium, minimal Shopify templates for dropshipping, drop service and clothing brands. We are building them now. Join the waitlist to hear first.</p>
+        <div class="hero-actions">
+          <a href="#waitlist" class="btn">Join the waitlist</a>
+          <a href="#themes" class="btn btn-ghost">See the themes</a>
+        </div>
+      </div>
+    </div>
+
+    <section id="themes">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="section-label">Themes</p>
+          <h2>One theme for each kind of store.</h2>
+          <p class="section-sub">Each theme is designed for a specific business model, not a generic store.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="card-body">
+              <h3>Dropshipping</h3>
+              <p>A clean product-first layout for stores that sell fast-moving products from suppliers.</p>
+              <span class="tag">In development</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="card-body">
+              <h3>Drop service</h3>
+              <p>Built for service-led drop businesses that sell packages, bundles and done-for-you offers.</p>
+              <span class="tag">In development</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="card-body">
+              <h3>Clothing brand</h3>
+              <p>Editorial, image-led pages for apparel brands that sell a look as much as a product.</p>
+              <span class="tag">In development</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="included">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="section-label">What's included</p>
+          <h2>Everything a theme needs to launch.</h2>
+        </div>
+
+        <ul class="included">
+          <li><strong>Shopify Online Store 2.0</strong><span>Built on the current theme architecture, with sections you can edit in the theme editor.</span></li>
+          <li><strong>Mobile first</strong><span>Designed for phones before desktop, since most shoppers start there.</span></li>
+          <li><strong>Fast by default</strong><span>Lightweight code and images, with no heavy scripts slowing the store down.</span></li>
+          <li><strong>Setup guide</strong><span>Step-by-step instructions to install, customise and go live.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="section-label">Pricing</p>
+          <h2>Simple pricing, announced before launch.</h2>
+        </div>
+
+        <div class="pricing-box">
+          <p class="big">Pricing announced soon</p>
+          <p>Join the waitlist and you will hear the price first.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="waitlist" class="waitlist">
+      <div class="wrap">
+        <p class="section-label">Waitlist</p>
+        <h2>Be first to get access.</h2>
+        <p class="section-sub">Leave your email and we will tell you when the themes are ready.</p>
+
+        <form action="#" method="post" onsubmit="return false;">
+          <label for="email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email</label>
+          <input id="email" type="email" name="email" placeholder="you@example.com" required>
+          <button type="submit" class="btn">Join waitlist</button>
+        </form>
+        <p class="fine">No spam. Unsubscribe at any time.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© 2026 Droplates. All rights reserved.</span>
+      <span>Shopify is a trademark of Shopify Inc. Droplates is not affiliated with Shopify.</span>
+    </div>
+  </footer>
+
+</body>
+</html>
