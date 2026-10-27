@@ -1,4 +1,4 @@
-// DropLates waitlist form.
+// Droplates waitlist form.
 // Validates the email, saves it to the waitlist endpoint, and shows loading, error and success states.
 
 (function () {
@@ -39,7 +39,7 @@
 
     if (!config.waitlistEndpoint) {
       // Not connected yet: show the success state, but nothing is stored.
-      console.warn("DropLates: waitlistEndpoint is empty, so this signup was not saved.");
+      console.warn("Droplates: waitlistEndpoint is empty, so this signup was not saved.");
       await new Promise(function (resolve) { setTimeout(resolve, 600); });
       return;
     }

@@ -1,4 +1,4 @@
--- DropLates waitlist table (Supabase / Postgres).
+-- Droplates waitlist table (Supabase / Postgres).
 -- Run once in: Supabase dashboard → SQL Editor → New query → Run.
 
 create table if not exists public.waitlist (

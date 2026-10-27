@@ -1,6 +1,6 @@
-# DropLates
+# Droplates
 
-Website for DropLates, premium Shopify themes. Currently a waitlist page.
+Website for Droplates, premium Shopify themes. Currently a waitlist page.
 
 ## Run locally
 
