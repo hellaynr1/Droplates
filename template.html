@@ -45,7 +45,8 @@
       height: 64px;
     }
 
-    .wordmark { font-weight: 700; letter-spacing: -0.02em; font-size: 1.125rem; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.02em; font-size: 1.125rem; }
+    .wordmark img { width: 28px; height: 28px; display: block; border-radius: 6px; }
 
     .back { font-size: 0.875rem; color: var(--muted); }
     .back:hover { color: var(--text); }
@@ -230,7 +231,7 @@
 
   <header>
     <div class="wrap nav">
-      <a href="index.html" class="wordmark">Droplates</a>
+      <a href="index.html" class="wordmark"><img src="assets/logo-traced.svg" alt="Droplates logo">Droplates</a>
       <a href="index.html#themes" class="back">← All templates</a>
     </div>
   </header>
@@ -272,7 +273,7 @@
   </main>
 
   <footer>
-    <div class="wrap">© 2026 Droplates. All rights reserved.</div>
+    <div class="wrap">Brought to you by Gatify. © 2026 Droplates. All rights reserved.</div>
   </footer>
 
   <script>

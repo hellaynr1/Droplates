@@ -53,9 +53,19 @@
     }
 
     .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
       letter-spacing: -0.02em;
       font-size: 1.125rem;
+    }
+
+    .wordmark img {
+      width: 28px;
+      height: 28px;
+      display: block;
+      border-radius: 6px;
     }
 
     .nav-links {
@@ -388,7 +398,7 @@
 
   <header>
     <div class="wrap nav">
-      <a href="#top" class="wordmark">Droplates</a>
+      <a href="#top" class="wordmark"><img src="assets/logo-traced.svg" alt="Droplates logo">Droplates</a>
       <nav class="nav-links">
         <a href="#themes">Themes</a>
         <a href="#included">Included</a>
@@ -574,7 +584,7 @@
 
   <footer>
     <div class="wrap footer-inner">
-      <span>© 2026 Droplates. All rights reserved.</span>
+      <span>Brought to you by Gatify. © 2026 Droplates. All rights reserved.</span>
       <span>Shopify is a trademark of Shopify Inc. Droplates is not affiliated with Shopify.</span>
     </div>
   </footer>
