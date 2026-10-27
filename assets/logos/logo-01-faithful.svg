@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="150" height="150">
+  <defs>
+    <linearGradient id="reflect" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6a6a6a"/>
+      <stop offset="1" stop-color="#5c5c5c" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="150" height="150" fill="#000"/>
+  <!-- bottom plate, dim reflection -->
+  <path d="M75 96 L100 105 L75 114 L50 105 Z" fill="url(#reflect)"/>
+  <!-- middle plate -->
+  <path d="M75 79 L108 88 L75 97 L42 88 Z" fill="#b8b8b8" stroke="#b8b8b8" stroke-width="10" stroke-linejoin="round"/>
+  <!-- top plate -->
+  <path d="M75 38 L108 60 L75 79 L42 60 Z" fill="#fff" stroke="#fff" stroke-width="10" stroke-linejoin="round"/>
+</svg>
