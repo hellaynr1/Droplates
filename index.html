@@ -3,591 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Droplates — Shopify themes</title>
-  <meta name="description" content="Premium Shopify themes for dropshipping, drop service and clothing brands. Join the waitlist.">
-  <style>
-    :root {
-      --bg: #000;
-      --surface: #0b0b0b;
-      --line: #1f1f1f;
-      --text: #f5f5f5;
-      --muted: #8a8a8a;
-      --accent: #fff;
-      --radius: 14px;
-    }
+  <title>DropLates — Premium Shopify Themes</title>
+  <meta name="description" content="Premium Shopify themes for brands that want better design, easier customization and stronger conversion. Join the DropLates waitlist for early access.">
+  <link rel="canonical" href="https://droplates.com/">
+  <meta name="theme-color" content="#0a0a0a">
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DropLates">
+  <meta property="og:title" content="DropLates — Premium Shopify Themes">
+  <meta property="og:description" content="Shopify stores shouldn't look like templates. Join the DropLates waitlist for early access.">
+  <meta property="og:url" content="https://droplates.com/">
+  <meta property="og:image" content="https://droplates.com/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DropLates — Premium Shopify Themes">
+  <meta name="twitter:description" content="Shopify stores shouldn't look like templates. Join the DropLates waitlist for early access.">
+  <meta name="twitter:image" content="https://droplates.com/assets/og.png">
 
-    a { color: inherit; text-decoration: none; }
-
-    .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
-
-    /* Header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      gap: 16px;
-    }
-
-    .wordmark {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      font-size: 1.125rem;
-    }
-
-    .wordmark img {
-      width: 28px;
-      height: 28px;
-      display: block;
-      border-radius: 6px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      font-size: 0.875rem;
-      color: var(--muted);
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 44px;
-      padding: 0 20px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #000;
-      font-weight: 600;
-      font-size: 0.9375rem;
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn:hover { opacity: 0.88; }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--line);
-    }
-
-    /* Hero */
-    .hero {
-      padding: 120px 0 96px;
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      font-size: 0.75rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 6px 14px;
-      margin-bottom: 28px;
-    }
-
-    h1 {
-      font-size: clamp(2.5rem, 7vw, 5rem);
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-      font-weight: 700;
-      max-width: 900px;
-      margin: 0 auto 24px;
-    }
-
-    .lede {
-      font-size: clamp(1rem, 2.2vw, 1.25rem);
-      color: var(--muted);
-      max-width: 620px;
-      margin: 0 auto 40px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* Sections */
-    section { padding: 96px 0; border-top: 1px solid var(--line); }
-
-    .section-head { margin-bottom: 48px; max-width: 640px; }
-
-    .section-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      font-weight: 700;
-    }
-
-    .section-sub { color: var(--muted); margin-top: 12px; }
-
-    /* Theme niches */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .preview {
-      aspect-ratio: 4 / 3;
-      background: #050505;
-      border-bottom: 1px solid var(--line);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* 3D phone mockup */
-    .phone-stage { perspective: 1400px; margin: 72px auto 0; }
-
-    .phone {
-      width: 240px;
-      height: 480px;
-      margin: 0 auto;
-      padding: 12px;
-      border-radius: 40px;
-      background: #111;
-      border: 2px solid #2a2a2a;
-      transform: rotateX(14deg) rotateY(-22deg);
-      transform-style: preserve-3d;
-      box-shadow: 0 50px 90px rgba(0, 0, 0, 0.7), inset 0 0 0 1px #333;
-    }
-
-    .phone-screen {
-      width: 100%;
-      height: 100%;
-      border-radius: 30px;
-      background: #050505;
-      padding: 18px 14px;
-      display: grid;
-      grid-template-rows: 14px 1fr 1fr 28px;
-      gap: 10px;
-    }
-
-    .phone-screen i {
-      display: block;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      background: #0e0e0e;
-    }
-
-    .phone-screen .fill { background: #1e1e1e; }
-    .phone-screen .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .phone-screen .pill { background: #e8e8e8; border-color: #e8e8e8; border-radius: 999px; align-self: center; height: 20px; width: 70%; justify-self: center; }
-
-    /* Structure mockups: layout diagrams, not real theme screenshots */
-    .mock {
-      position: absolute;
-      inset: 14% 12%;
-      display: grid;
-      gap: 6px;
-    }
-
-    .mock i {
-      display: block;
-      border: 1px solid #2a2a2a;
-      border-radius: 6px;
-      background: #0e0e0e;
-    }
-
-    .mock .bar { height: 14px; }
-    .mock .fill { background: #1e1e1e; border-color: #2a2a2a; }
-    .mock .pill { background: #e8e8e8; border-color: #e8e8e8; height: 18px; justify-self: start; width: 40%; }
-
-    .mock-catalog { grid-template-rows: auto 1fr 1fr; grid-template-columns: repeat(3, 1fr); }
-    .mock-catalog .bar { grid-column: 1 / -1; }
-
-    .mock-single { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; }
-    .mock-single .hero { grid-row: 1 / 3; }
-    .mock-single .pill { grid-column: 2; }
-
-    .mock-brand { grid-template-rows: 2fr 1fr; grid-template-columns: 1fr 1fr; }
-    .mock-brand .hero { grid-column: 1 / -1; }
-
-    .mock-services { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
-    .mock-services .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
-
-    .mock-digital { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr auto; }
-    .mock-digital .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
-
-    .mock-drop { grid-template-rows: auto 1fr auto; }
-    .mock-drop .pill { justify-self: center; width: 50%; }
-
-    .mock-subscription { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
-    .mock-subscription .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
-
-    .card-body { padding: 24px; }
-
-    .card-body h3 {
-      font-size: 1.25rem;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .card-body p { color: var(--muted); font-size: 0.9375rem; }
-
-    .tag {
-      display: inline-block;
-      margin-top: 16px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 4px 10px;
-    }
-
-    /* Included */
-    .included {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 0;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .included li {
-      list-style: none;
-      padding: 28px 24px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .included li:last-child { border-right: none; }
-
-    .included strong {
-      display: block;
-      font-size: 1rem;
-      margin-bottom: 6px;
-    }
-
-    .included span { color: var(--muted); font-size: 0.9375rem; }
-
-    /* Pricing */
-    .pricing-box {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 40px 32px;
-      text-align: center;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    .pricing-box .big {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .pricing-box p { color: var(--muted); }
-
-    /* Waitlist */
-    .waitlist {
-      text-align: center;
-    }
-
-    .waitlist form {
-      display: flex;
-      gap: 8px;
-      max-width: 480px;
-      margin: 32px auto 0;
-    }
-
-    .waitlist input {
-      flex: 1;
-      min-width: 0;
-      height: 48px;
-      padding: 0 18px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.9375rem;
-    }
-
-    .waitlist input::placeholder { color: #555; }
-    .waitlist input:focus { outline: 1px solid #444; }
-
-    .waitlist .fine {
-      margin-top: 16px;
-      font-size: 0.8125rem;
-      color: #666;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 32px 0;
-      font-size: 0.8125rem;
-      color: #666;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    /* Phone */
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      .hero { padding: 80px 0 64px; }
-      section { padding: 72px 0; }
-      .waitlist form { flex-direction: column; }
-      .waitlist .btn { width: 100%; }
-    }
-  </style>
+  <link rel="icon" href="assets/favicon.png" type="image/png" sizes="256x256">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="assets/landing.css">
 </head>
 <body>
 
-  <header>
-    <div class="wrap nav">
-      <a href="#top" class="wordmark"><img src="assets/logo-traced.svg" alt="Droplates logo">Droplates</a>
-      <nav class="nav-links">
-        <a href="#themes">Themes</a>
-        <a href="#included">Included</a>
-        <a href="#pricing">Pricing</a>
-      </nav>
-      <a href="#waitlist" class="btn">Join waitlist</a>
-    </div>
+  <a class="skip-link" href="#waitlist">Skip to waitlist</a>
+
+  <header class="site-header wrap">
+    <a class="wordmark" href="/">
+      <img src="assets/logo-traced.svg" width="28" height="28" alt="">
+      DropLates
+    </a>
+    <span class="status">Coming soon</span>
   </header>
 
-  <main id="top">
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Premium Shopify themes</p>
+        <h1 id="hero-title" class="reveal">Shopify stores shouldn’t look like templates.</h1>
+        <p class="lede reveal">Premium Shopify themes for brands that want better design, easier customization and stronger conversion.</p>
 
-    <div class="hero">
-      <div class="wrap">
-        <span class="eyebrow">Shopify themes · Coming soon</span>
-        <h1>Drop it. Customize it. Go live.</h1>
-        <p class="lede">Premium, minimal Shopify templates for dropshipping, drop service and clothing brands. We are building them now. Join the waitlist to hear first.</p>
-        <div class="hero-actions">
-          <a href="#waitlist" class="btn">Join the waitlist</a>
-          <a href="#themes" class="btn btn-ghost">See the themes</a>
+        <form id="waitlist" class="signup reveal" novalidate>
+          <label for="email" class="visually-hidden">Email address</label>
+          <div class="field-row">
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required aria-describedby="email-help form-status">
+            <button type="submit" class="btn-primary">
+              <span class="btn-idle">Get early access</span>
+              <span class="btn-busy" hidden>Joining…</span>
+            </button>
+          </div>
+          <p id="email-help" class="form-help">Be one of the first. No spam, unsubscribe anytime.</p>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          <!-- Honeypot: real visitors never see or fill this field. -->
+          <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </form>
+
+        <div id="success" class="success" tabindex="-1" hidden>
+          <p class="success-title">You’re in.</p>
+          <p>We’ll let you know when DropLates is ready.</p>
         </div>
-        <div class="phone-stage">
-          <div class="phone">
-            <div class="phone-screen">
-              <i></i>
-              <i class="fill"></i>
-              <div class="tiles"><i></i><i></i></div>
-              <i class="pill"></i>
-            </div>
+      </div>
+
+      <div class="hero-visual reveal-late" aria-hidden="true">
+        <div class="canvas">
+          <div class="layer layer-back"></div>
+          <div class="layer layer-mid"></div>
+          <div class="layer layer-front">
+            <div class="front-bar"><i></i><i></i><i></i></div>
+            <div class="front-hero"></div>
+            <div class="front-row"><i></i><i></i><i></i></div>
+            <div class="front-cta"></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <section id="themes">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="section-label">Themes</p>
-          <h2>One theme for each kind of store.</h2>
-          <p class="section-sub">Each theme is designed for a specific business model, not a generic store.</p>
-        </div>
-
-        <div class="grid-3">
-          <a class="card" href="template.html?type=catalog">
-            <div class="preview">
-              <div class="mock mock-catalog">
-                <i class="bar"></i><i></i><i></i><i></i><i></i><i></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Catalog store</h3>
-              <p>Many products, filters and fast search. Built for drop shipping stores that list supplier catalogs.</p>
-              <span class="tag">Drop shipping</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=single">
-            <div class="preview">
-              <div class="mock mock-single">
-                <i class="hero fill"></i><i class="pill"></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Single product</h3>
-              <p>One hero product with a sales page, reviews and upsells. Built for testing one winning product fast.</p>
-              <span class="tag">Drop shipping</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=brand">
-            <div class="preview">
-              <div class="mock mock-brand">
-                <i class="hero fill"></i><i></i><i></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Brand and lookbook</h3>
-              <p>Large imagery, collections and a brand story. Built for clothing, beauty and skincare brands.</p>
-              <span class="tag">Clothing · Beauty · Skincare</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=services">
-            <div class="preview">
-              <div class="mock mock-services">
-                <i></i><i></i><i></i><i class="pill"></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Services and bundles</h3>
-              <p>Packages, pricing tiers and a booking or quote button in place of a cart. Built for drop service businesses.</p>
-              <span class="tag">Drop service</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=digital">
-            <div class="preview">
-              <div class="mock mock-digital">
-                <i></i><i></i><i></i><i></i><i class="pill"></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Digital products</h3>
-              <p>Downloads, courses and presets with instant delivery. No shipping, and a download page in place of a delivery step.</p>
-              <span class="tag">No shipping</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=drop">
-            <div class="preview">
-              <div class="mock mock-drop">
-                <i class="bar"></i><i class="hero fill"></i><i class="pill"></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Pre-order and drop</h3>
-              <p>A countdown, a waitlist and limited stock for timed releases. Built around the Droplates idea of launching drops.</p>
-              <span class="tag">Limited releases</span>
-            </div>
-          </a>
-
-          <a class="card" href="template.html?type=subscription">
-            <div class="preview">
-              <div class="mock mock-subscription">
-                <i></i><i class="fill"></i><i></i><i class="pill"></i>
-              </div>
-            </div>
-            <div class="card-body">
-              <h3>Subscription</h3>
-              <p>Recurring plans, subscribe-and-save and an account page. Built around plan pricing instead of one-off purchases.</p>
-              <span class="tag">Recurring</span>
-            </div>
-          </a>
-        </div>
+        <p class="caption">Layout study. Not a screenshot of a finished theme.</p>
       </div>
     </section>
 
-    <section id="included">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="section-label">What's included</p>
-          <h2>Everything a theme needs to launch.</h2>
-        </div>
-
-        <ul class="included">
-          <li><strong>Shopify Online Store 2.0</strong><span>Built on the current theme architecture, with sections you can edit in the theme editor.</span></li>
-          <li><strong>Mobile first</strong><span>Designed for phones before desktop, since most shoppers start there.</span></li>
-          <li><strong>Fast by default</strong><span>Lightweight code and images, with no heavy scripts slowing the store down.</span></li>
-          <li><strong>Setup guide</strong><span>Step-by-step instructions to install, customise and go live.</span></li>
-        </ul>
-      </div>
+    <section class="intro wrap" aria-labelledby="intro-title">
+      <p class="eyebrow">Built for stores that want to look different</p>
+      <h2 id="intro-title">Drop it. Customize it. Go live.</h2>
+      <ul class="points">
+        <li>
+          <strong>Premium design</strong>
+          <span>Layouts that look considered from the first screen, not like a template.</span>
+        </li>
+        <li>
+          <strong>Built for conversion</strong>
+          <span>Sections designed to help visitors understand the product and buy.</span>
+        </li>
+        <li>
+          <strong>Easy to customize</strong>
+          <span>Made to change without a developer.</span>
+        </li>
+      </ul>
     </section>
-
-    <section id="pricing">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="section-label">Pricing</p>
-          <h2>Simple pricing, announced before launch.</h2>
-        </div>
-
-        <div class="pricing-box">
-          <p class="big">Pricing announced soon</p>
-          <p>Join the waitlist and you will hear the price first.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="waitlist" class="waitlist">
-      <div class="wrap">
-        <p class="section-label">Waitlist</p>
-        <h2>Be first to get access.</h2>
-        <p class="section-sub">Leave your email and we will tell you when the themes are ready.</p>
-
-        <form action="#" method="post" onsubmit="return false;">
-          <label for="email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email</label>
-          <input id="email" type="email" name="email" placeholder="you@example.com" required>
-          <button type="submit" class="btn">Join waitlist</button>
-        </form>
-        <p class="fine">No spam. Unsubscribe at any time.</p>
-      </div>
-    </section>
-
   </main>
 
-  <footer>
-    <div class="wrap footer-inner">
-      <span>Brought to you by Guidify. © 2026 Droplates. All rights reserved.</span>
-      <span>Shopify is a trademark of Shopify Inc. Droplates is not affiliated with Shopify.</span>
-    </div>
+  <footer class="site-footer wrap">
+    <span>DropLates © 2026</span>
+    <span>Premium Shopify themes. Coming soon.</span>
+    <span>Brought to you by Guidify</span>
+    <span>Shopify is a trademark of Shopify Inc. DropLates is not affiliated with Shopify.</span>
   </footer>
 
+  <script>
+    // Waitlist integration point. Both values are public-safe, so they can live in the page.
+    // Leave waitlistEndpoint empty until the database is set up (see supabase/waitlist.sql).
+    window.DROPLATES_CONFIG = {
+      waitlistEndpoint: "",   // e.g. https://YOUR-PROJECT.supabase.co/rest/v1/waitlist
+      waitlistKey: ""         // the Supabase publishable (anon) key. Never paste a service_role key here.
+    };
+  </script>
+  <script src="assets/waitlist.js" defer></script>
 </body>
 </html>
