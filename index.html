@@ -173,33 +173,43 @@
       background: #050505;
       border-bottom: 1px solid var(--line);
       position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* Placeholder wireframe, not a real theme screenshot */
-    .preview::before,
-    .preview::after {
-      content: "";
+    /* Structure mockups: layout diagrams, not real theme screenshots */
+    .mock {
       position: absolute;
-      left: 12%;
-      right: 12%;
-      border: 1px dashed #2a2a2a;
-      border-radius: 8px;
+      inset: 14% 12%;
+      display: grid;
+      gap: 6px;
     }
 
-    .preview::before { top: 14%; height: 18%; }
-    .preview::after { top: 40%; bottom: 14%; }
-
-    .preview span {
-      position: relative;
-      z-index: 1;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #5c5c5c;
+    .mock i {
+      display: block;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      background: #0e0e0e;
     }
+
+    .mock .bar { height: 14px; }
+    .mock .fill { background: #1e1e1e; border-color: #2a2a2a; }
+    .mock .pill { background: #e8e8e8; border-color: #e8e8e8; height: 18px; justify-self: start; width: 40%; }
+
+    .mock-catalog { grid-template-rows: auto 1fr 1fr; grid-template-columns: repeat(3, 1fr); }
+    .mock-catalog .bar { grid-column: 1 / -1; }
+
+    .mock-single { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; }
+    .mock-single .hero { grid-row: 1 / 3; }
+    .mock-single .pill { grid-column: 2; }
+
+    .mock-brand { grid-template-rows: 2fr 1fr; grid-template-columns: 1fr 1fr; }
+    .mock-brand .hero { grid-column: 1 / -1; }
+
+    .mock-services { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr auto; }
+    .mock-services .pill { grid-column: 1 / -1; justify-self: center; width: 50%; }
 
     .card-body { padding: 24px; }
 
@@ -365,29 +375,54 @@
 
         <div class="grid-3">
           <article class="card">
-            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="preview">
+              <div class="mock mock-catalog">
+                <i class="bar"></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
             <div class="card-body">
-              <h3>Dropshipping</h3>
-              <p>A clean product-first layout for stores that sell fast-moving products from suppliers.</p>
-              <span class="tag">In development</span>
+              <h3>Catalog store</h3>
+              <p>Many products, filters and fast search. Built for drop shipping stores that list supplier catalogs.</p>
+              <span class="tag">Drop shipping</span>
             </div>
           </article>
 
           <article class="card">
-            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="preview">
+              <div class="mock mock-single">
+                <i class="hero fill"></i><i class="pill"></i>
+              </div>
+            </div>
             <div class="card-body">
-              <h3>Drop service</h3>
-              <p>Built for service-led drop businesses that sell packages, bundles and done-for-you offers.</p>
-              <span class="tag">In development</span>
+              <h3>Single product</h3>
+              <p>One hero product with a sales page, reviews and upsells. Built for testing one winning product fast.</p>
+              <span class="tag">Drop shipping</span>
             </div>
           </article>
 
           <article class="card">
-            <div class="preview"><span>Preview coming soon</span></div>
+            <div class="preview">
+              <div class="mock mock-brand">
+                <i class="hero fill"></i><i></i><i></i>
+              </div>
+            </div>
             <div class="card-body">
-              <h3>Clothing brand</h3>
-              <p>Editorial, image-led pages for apparel brands that sell a look as much as a product.</p>
-              <span class="tag">In development</span>
+              <h3>Brand and lookbook</h3>
+              <p>Large imagery, collections and a brand story. Built for clothing, beauty and skincare brands.</p>
+              <span class="tag">Clothing · Beauty · Skincare</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="preview">
+              <div class="mock mock-services">
+                <i></i><i></i><i></i><i class="pill"></i>
+              </div>
+            </div>
+            <div class="card-body">
+              <h3>Services and bundles</h3>
+              <p>Packages, pricing tiers and a booking or quote button in place of a cart. Built for drop service businesses.</p>
+              <span class="tag">Drop service</span>
             </div>
           </article>
         </div>
