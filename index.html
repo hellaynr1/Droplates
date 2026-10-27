@@ -179,6 +179,44 @@
       justify-content: center;
     }
 
+    /* 3D phone mockup */
+    .phone-stage { perspective: 1400px; margin: 72px auto 0; }
+
+    .phone {
+      width: 240px;
+      height: 480px;
+      margin: 0 auto;
+      padding: 12px;
+      border-radius: 40px;
+      background: #111;
+      border: 2px solid #2a2a2a;
+      transform: rotateX(14deg) rotateY(-22deg);
+      transform-style: preserve-3d;
+      box-shadow: 0 50px 90px rgba(0, 0, 0, 0.7), inset 0 0 0 1px #333;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      background: #050505;
+      padding: 18px 14px;
+      display: grid;
+      grid-template-rows: 14px 1fr 1fr 28px;
+      gap: 10px;
+    }
+
+    .phone-screen i {
+      display: block;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      background: #0e0e0e;
+    }
+
+    .phone-screen .fill { background: #1e1e1e; }
+    .phone-screen .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .phone-screen .pill { background: #e8e8e8; border-color: #e8e8e8; border-radius: 999px; align-self: center; height: 20px; width: 70%; justify-self: center; }
+
     /* Structure mockups: layout diagrams, not real theme screenshots */
     .mock {
       position: absolute;
@@ -371,6 +409,16 @@
           <a href="#waitlist" class="btn">Join the waitlist</a>
           <a href="#themes" class="btn btn-ghost">See the themes</a>
         </div>
+        <div class="phone-stage">
+          <div class="phone">
+            <div class="phone-screen">
+              <i></i>
+              <i class="fill"></i>
+              <div class="tiles"><i></i><i></i></div>
+              <i class="pill"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -383,7 +431,7 @@
         </div>
 
         <div class="grid-3">
-          <article class="card">
+          <a class="card" href="template.html?type=catalog">
             <div class="preview">
               <div class="mock mock-catalog">
                 <i class="bar"></i><i></i><i></i><i></i><i></i><i></i>
@@ -394,9 +442,9 @@
               <p>Many products, filters and fast search. Built for drop shipping stores that list supplier catalogs.</p>
               <span class="tag">Drop shipping</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=single">
             <div class="preview">
               <div class="mock mock-single">
                 <i class="hero fill"></i><i class="pill"></i>
@@ -407,9 +455,9 @@
               <p>One hero product with a sales page, reviews and upsells. Built for testing one winning product fast.</p>
               <span class="tag">Drop shipping</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=brand">
             <div class="preview">
               <div class="mock mock-brand">
                 <i class="hero fill"></i><i></i><i></i>
@@ -420,9 +468,9 @@
               <p>Large imagery, collections and a brand story. Built for clothing, beauty and skincare brands.</p>
               <span class="tag">Clothing · Beauty · Skincare</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=services">
             <div class="preview">
               <div class="mock mock-services">
                 <i></i><i></i><i></i><i class="pill"></i>
@@ -433,9 +481,9 @@
               <p>Packages, pricing tiers and a booking or quote button in place of a cart. Built for drop service businesses.</p>
               <span class="tag">Drop service</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=digital">
             <div class="preview">
               <div class="mock mock-digital">
                 <i></i><i></i><i></i><i></i><i class="pill"></i>
@@ -446,9 +494,9 @@
               <p>Downloads, courses and presets with instant delivery. No shipping, and a download page in place of a delivery step.</p>
               <span class="tag">No shipping</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=drop">
             <div class="preview">
               <div class="mock mock-drop">
                 <i class="bar"></i><i class="hero fill"></i><i class="pill"></i>
@@ -459,9 +507,9 @@
               <p>A countdown, a waitlist and limited stock for timed releases. Built around the Droplates idea of launching drops.</p>
               <span class="tag">Limited releases</span>
             </div>
-          </article>
+          </a>
 
-          <article class="card">
+          <a class="card" href="template.html?type=subscription">
             <div class="preview">
               <div class="mock mock-subscription">
                 <i></i><i class="fill"></i><i></i><i class="pill"></i>
@@ -472,7 +520,7 @@
               <p>Recurring plans, subscribe-and-save and an account page. Built around plan pricing instead of one-off purchases.</p>
               <span class="tag">Recurring</span>
             </div>
-          </article>
+          </a>
         </div>
       </div>
     </section>

@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Template — Droplates</title>
+  <meta name="description" content="A Droplates Shopify template for one store structure.">
+  <style>
+    :root {
+      --bg: #000;
+      --surface: #0b0b0b;
+      --line: #1f1f1f;
+      --text: #f5f5f5;
+      --muted: #8a8a8a;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .wordmark { font-weight: 700; letter-spacing: -0.02em; font-size: 1.125rem; }
+
+    .back { font-size: 0.875rem; color: var(--muted); }
+    .back:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.88; }
+
+    .detail {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding: 72px 0 96px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 6vw, 4rem);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .lede { color: var(--muted); font-size: 1.125rem; max-width: 560px; }
+
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+
+    h2 {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .included {
+      list-style: none;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .included li {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .included li:last-child { border-bottom: none; }
+
+    /* 3D phone mockup, same look as the home page */
+    .phone-stage { perspective: 1400px; display: flex; justify-content: center; }
+
+    .phone {
+      width: 260px;
+      height: 520px;
+      padding: 12px;
+      border-radius: 40px;
+      background: #111;
+      border: 2px solid #2a2a2a;
+      transform: rotateX(14deg) rotateY(-22deg);
+      transform-style: preserve-3d;
+      box-shadow: 0 50px 90px rgba(0, 0, 0, 0.7), inset 0 0 0 1px #333;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      background: #050505;
+      padding: 18px 14px;
+      display: grid;
+      grid-template-rows: 14px 1fr 1fr 28px;
+      gap: 10px;
+    }
+
+    .phone-screen i {
+      display: block;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      background: #0e0e0e;
+    }
+
+    .phone-screen .fill { background: #1e1e1e; }
+    .phone-screen .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .phone-screen .pill { background: #e8e8e8; border-color: #e8e8e8; border-radius: 999px; align-self: center; height: 20px; width: 70%; justify-self: center; }
+
+    .notice {
+      color: var(--muted);
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0;
+      font-size: 0.8125rem;
+      color: #666;
+    }
+
+    @media (min-width: 900px) {
+      .detail { grid-template-columns: 1fr 1fr; align-items: center; }
+    }
+
+    @media (max-width: 640px) {
+      .detail { padding: 48px 0 72px; gap: 40px; }
+      .phone { width: 220px; height: 440px; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav">
+      <a href="index.html" class="wordmark">Droplates</a>
+      <a href="index.html#themes" class="back">← All templates</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="detail" id="detail">
+      <div>
+        <span class="eyebrow" id="tag"></span>
+        <h1 id="title"></h1>
+        <p class="lede" id="desc"></p>
+        <div class="actions">
+          <a href="index.html#waitlist" class="btn">Join the waitlist</a>
+          <a href="index.html#pricing" class="btn btn-ghost">Pricing</a>
+        </div>
+        <h2 style="margin-top:48px">What's included</h2>
+        <ul class="included" id="included"></ul>
+      </div>
+      <div class="phone-stage">
+        <div class="phone">
+          <div class="phone-screen">
+            <i></i>
+            <i class="fill"></i>
+            <div class="tiles"><i></i><i></i></div>
+            <i class="pill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="notice" id="notice" hidden>Template not found. <a href="index.html#themes" style="text-decoration:underline">Back to all templates</a>.</p>
+  </main>
+
+  <footer>
+    <div class="wrap">© 2026 Droplates. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Detail content for each theme card. Edit here; the card links use these keys.
+    var TEMPLATES = {
+      catalog: {
+        title: "Catalog store",
+        tag: "Drop shipping",
+        desc: "Many products, filters and fast search. Built for drop shipping stores that list supplier catalogs.",
+        included: ["Collection pages with filters", "Fast product search", "Supplier-ready product layout", "Setup guide"]
+      },
+      single: {
+        title: "Single product",
+        tag: "Drop shipping",
+        desc: "One hero product with a sales page, reviews and upsells. Built for testing one winning product fast.",
+        included: ["Hero product sales page", "Reviews and social proof sections", "Upsell and bundle blocks", "Setup guide"]
+      },
+      brand: {
+        title: "Brand and lookbook",
+        tag: "Clothing · Beauty · Skincare",
+        desc: "Large imagery, collections and a brand story. Built for clothing, beauty and skincare brands.",
+        included: ["Full-width lookbook sections", "Collection and brand story pages", "Editorial product layouts", "Setup guide"]
+      },
+      services: {
+        title: "Services and bundles",
+        tag: "Drop service",
+        desc: "Packages, pricing tiers and a booking or quote button in place of a cart. Built for drop service businesses.",
+        included: ["Package and pricing tier sections", "Booking or quote button", "Bundle layouts", "Setup guide"]
+      },
+      digital: {
+        title: "Digital products",
+        tag: "No shipping",
+        desc: "Downloads, courses and presets with instant delivery. No shipping, and a download page in place of a delivery step.",
+        included: ["Digital product pages", "Download and access page", "Course and lesson layouts", "Setup guide"]
+      },
+      drop: {
+        title: "Pre-order and drop",
+        tag: "Limited releases",
+        desc: "A countdown, a waitlist and limited stock for timed releases. Built around the Droplates idea of launching drops.",
+        included: ["Countdown timer section", "Waitlist and notify-me block", "Limited stock indicators", "Setup guide"]
+      },
+      subscription: {
+        title: "Subscription",
+        tag: "Recurring",
+        desc: "Recurring plans, subscribe-and-save and an account page. Built around plan pricing instead of one-off purchases.",
+        included: ["Plan comparison sections", "Subscribe-and-save product layout", "Account page layout", "Setup guide"]
+      }
+    };
+
+    (function () {
+      var type = new URLSearchParams(window.location.search).get("type");
+      var t = TEMPLATES[type];
+      if (!t) {
+        document.getElementById("detail").hidden = true;
+        document.getElementById("notice").hidden = false;
+        document.title = "Template not found — Droplates";
+        return;
+      }
+      document.title = t.title + " — Droplates";
+      document.getElementById("tag").textContent = t.tag;
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("desc").textContent = t.desc;
+      var list = document.getElementById("included");
+      t.included.forEach(function (item) {
+        var li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
+    })();
+  </script>
+
+</body>
+</html>
