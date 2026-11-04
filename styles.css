@@ -38,11 +38,11 @@ h1{margin:28px 0 0;font-size:clamp(48px,8.4vw,104px);line-height:1;letter-spacin
 .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
 
 /* Scroll scene: sticky 3D logo, Pick / Drop / Launch */
-.scene{position:relative;height:300vh;margin-top:24px}
+.scene{position:relative;height:170vh;margin-top:24px}
 .pin{position:sticky;top:64px;height:calc(100vh - 64px);min-height:460px;display:grid;place-items:center;overflow:hidden}
 .stage{position:relative;width:100%;max-width:1000px;height:100%;perspective:1400px;display:grid;place-items:center}
 .glow{position:absolute;left:50%;top:48%;width:440px;height:440px;translate:-50% -50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 62%);pointer-events:none}
-.stack{--tx:0deg;--ty:0deg;position:relative;width:230px;height:230px;transform-style:preserve-3d;transform:translate(70px,20px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--tx)))}
+.stack{--tx:0deg;--ty:0deg;--rot:0deg;position:relative;width:230px;height:230px;transform-style:preserve-3d;transform:translate(70px,20px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--rot,0deg) + var(--tx)))}
 .layer{position:absolute;inset:0;border-radius:32px;transition:opacity 300ms var(--ease),filter 300ms var(--ease)}
 .l1{background:linear-gradient(135deg,#fff 45%,#e6e6e6)}
 .l2{background:linear-gradient(135deg,#c4c4c4,#8f8f8f)}
@@ -109,8 +109,8 @@ h1{margin:28px 0 0;font-size:clamp(48px,8.4vw,104px);line-height:1;letter-spacin
 @media (max-width:600px){
   .hero{padding-top:56px}
   .cta{width:100%;flex-direction:column}.cta .btn{justify-content:center}
-  .scene{height:260vh}
-  .stack{width:140px;height:140px;transform:translate(60px,10px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--tx)))}
+  .scene{height:150vh}
+  .stack{width:140px;height:140px;transform:translate(60px,10px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--rot,0deg) + var(--tx)))}
   .layer{border-radius:20px}
   .glow{width:280px;height:280px}
   .labels .d{display:none}

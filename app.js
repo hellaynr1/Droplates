@@ -25,10 +25,12 @@
     const act = p < 0.04 ? -1 : Math.min(2, Math.floor(p * 3.3));
     const lift = m ? 22 : 38;
     stack.style.setProperty('--tx', tx + 'deg'); stack.style.setProperty('--ty', ty + 'deg');
+    stack.style.setProperty('--rot', (reduce ? 0 : p * 360) + 'deg');
     layers.forEach((l, k) => {
       let z = (2 - k) * g;
       if (act > -1 && k <= act) z += lift;
-      l.style.transform = `translateZ(${z}px)`;
+      const fan = reduce ? 0 : (k - 1) * -26 * e;
+      l.style.transform = `translateZ(${z}px) rotateZ(${fan}deg)`;
       l.classList.toggle('dim', act > -1 && k !== act);
       l.classList.toggle('lit', k === act);
     });
