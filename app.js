@@ -17,15 +17,19 @@
   const ease = t => 1 - Math.pow(1 - t, 3);
   let tx = 0, ty = 0;
 
+  let sp = 0;
   function render() {
     const m = innerWidth < 600, vh = innerHeight;
     const r = scene.getBoundingClientRect();
-    const p = clamp(-r.top / (r.height - vh));
+    const target = clamp(-r.top / (r.height - vh));
+    sp += (target - sp) * (reduce ? 1 : 0.14);
+    if (Math.abs(target - sp) < 0.0005) sp = target;
+    const p = sp;
     const e = ease(clamp(p * 1.6));
     const g = (m ? 24 : 42) + (m ? 22 : 40) * Math.sin(Math.PI * clamp(p * 1.15));
     const act = p < 0.04 ? -1 : Math.min(2, Math.floor(p * 3.3));
     stack.style.setProperty('--tx', tx + 'deg'); stack.style.setProperty('--ty', ty + 'deg');
-    stack.style.setProperty('--rot', (reduce ? 0 : p * 360) + 'deg');
+    stack.style.setProperty('--rot', (reduce ? 0 : p * 90) + 'deg');
     layers.forEach((l, k) => {
       let z = (2 - k) * g;
       l.style.transform = `translateZ(${z}px)`;
@@ -34,7 +38,7 @@
     const s = stage.getBoundingClientRect();
     const pts = layers.map(l => { const b = l.getBoundingClientRect(); return { x: b.left - s.left + 4, y: b.top - s.top + b.height / 2 }; });
     const cy = (pts[0].y + pts[2].y) / 2, S = m ? 44 : 76;
-    const startX = Math.min(m ? 96 : s.width / 2 - 230, Math.min(...pts.map(q => q.x)) - 40);
+    const startX = m ? Math.min(96, Math.min(...pts.map(q => q.x)) - 40) : Math.min(...pts.map(q => q.x)) - 160;
     pts.forEach((q, k) => {
       const li = labels[k], w = wires[k], ly = cy + (k - 1) * S;
       li.style.setProperty('--x', startX + 'px');
@@ -50,7 +54,8 @@
     $('#hint').classList.toggle('gone', p > 0.03);
   }
   let raf = 0;
-  const req = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; render(); }); };
+  const settled = () => { const r = scene.getBoundingClientRect(); return Math.abs(clamp(-r.top / (r.height - innerHeight)) - sp) < 0.0005; };
+  const req = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; render(); if (!settled()) req(); }); };
   addEventListener('scroll', req, { passive: true });
   addEventListener('resize', req);
   if (!reduce && matchMedia('(hover:hover)').matches) {

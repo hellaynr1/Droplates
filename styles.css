@@ -42,7 +42,7 @@ h1{margin:28px 0 0;font-size:clamp(48px,8.4vw,104px);line-height:1;letter-spacin
 .pin{position:sticky;top:64px;height:calc(100vh - 64px);min-height:460px;display:grid;place-items:center;overflow:hidden}
 .stage{position:relative;width:100%;max-width:1000px;height:100%;perspective:1400px;display:grid;place-items:center}
 .glow{position:absolute;left:50%;top:48%;width:440px;height:440px;translate:-50% -50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 62%);pointer-events:none}
-.stack{--tx:0deg;--ty:0deg;--rot:0deg;position:relative;width:230px;height:230px;transform-style:preserve-3d;transform:translate(70px,20px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--rot,0deg) + var(--tx)))}
+.stack{--tx:0deg;--ty:0deg;--rot:0deg;position:relative;width:230px;height:230px;transform-style:preserve-3d;transform:translate(200px,20px) rotateX(calc(58deg + var(--ty))) rotateZ(calc(45deg + var(--rot,0deg) + var(--tx)))}
 .layer{position:absolute;inset:0;border-radius:32px;transition:opacity 300ms var(--ease),filter 300ms var(--ease)}
 .l1{background:linear-gradient(135deg,#fff 45%,#e6e6e6)}
 .l2{background:linear-gradient(135deg,#c4c4c4,#8f8f8f)}
@@ -129,4 +129,5 @@ h1{margin:28px 0 0;font-size:clamp(48px,8.4vw,104px);line-height:1;letter-spacin
 .wire::after{content:"";position:absolute;right:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:#fff}
 .wire.on{opacity:1}
 .wire.past{opacity:.35}
-.layer{transition:opacity 300ms var(--ease),filter 300ms var(--ease),transform 120ms linear}
+.glow{left:calc(50% + 200px)}
+@media (max-width:600px){.glow{left:calc(50% + 60px)}}
