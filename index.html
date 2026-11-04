@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Droplates — In development</title>
+<title>Droplates — Find the right website template</title>
 <meta name="description" content="Droplates is an upcoming platform for modern website templates and digital design resources. Currently in development.">
-<meta name="robots" content="index, follow">
 <meta property="og:title" content="Droplates — In development">
 <meta property="og:description" content="Modern website templates designed to simplify building for the web.">
 <meta name="theme-color" content="#080808">
@@ -15,22 +14,158 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-business" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-saas" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-portfolio" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></symbol>
+    <symbol id="i-blog" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 11h7M9 15h7M9 7h3"/></symbol>
+    <symbol id="i-agency" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.5c3 0 6 2 6 5.5"/></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 0-3 2-3 5v5h3v8"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></symbol>
+    <symbol id="i-edu" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></symbol>
+    <symbol id="i-event" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  </defs>
+</svg>
+
 <header class="nav">
-  <a href="/" class="brand" aria-label="Droplates home">Droplates</a>
-  <span class="pill"><span class="dot" aria-hidden="true"></span>In development</span>
+  <div class="wrap nav-inner">
+    <a href="/" class="brand" aria-label="Droplates home"><span class="logo" aria-hidden="true"></span>Droplates</a>
+    <nav class="links" aria-label="Main">
+      <a href="#finder">Template finder</a>
+      <a href="#categories">Categories</a>
+      <a href="#how">How it works</a>
+    </nav>
+    <span class="pill"><span class="dot" aria-hidden="true"></span>In development</span>
+  </div>
 </header>
 
-<main class="hero">
-  <p class="eyebrow">Coming soon</p>
-  <h1>Modern website templates, designed to simplify building for the web.</h1>
-  <p class="lead">Droplates is an upcoming platform for website templates and digital design resources. We're building it now.</p>
-  <a class="btn" href="https://guidify.eu" rel="noopener">Visit Guidify <span aria-hidden="true">→</span></a>
+<main>
+  <section class="hero wrap">
+    <p class="pill pill-sm"><span class="dot" aria-hidden="true"></span>Template finder · preview</p>
+    <h1>Find the right website template.</h1>
+    <p class="lead">Describe what you're building. Droplates will match you with modern templates designed to simplify building for the web.</p>
+  </section>
+
+  <section id="finder" class="wrap">
+    <form class="finder" id="finder-form" novalidate>
+      <ol class="steps" aria-label="Progress">
+        <li class="step is-active" data-step="1"><span class="num">1</span><span class="label">Describe</span></li>
+        <li class="step" data-step="2"><span class="num">2</span><span class="label">Refine</span></li>
+        <li class="step" data-step="3"><span class="num">3</span><span class="label">Your brief</span></li>
+      </ol>
+
+      <!-- Step 1 -->
+      <div class="panel" data-panel="1">
+        <h2>What kind of website are you building?</h2>
+        <p class="hint">Describe your project in a few words, or pick a category.</p>
+        <div class="field">
+          <label class="sr-only" for="desc">Project description</label>
+          <textarea id="desc" maxlength="500" rows="3" placeholder="e.g. a minimal landing page for a design studio, dark, with a contact form"></textarea>
+          <span class="count" id="count">0/500</span>
+        </div>
+        <p class="sub">Or choose a category</p>
+        <div class="chips grid4" role="group" aria-label="Category" data-single="category">
+          <button type="button" class="chip" data-value="Business"><svg><use href="#i-business"/></svg>Business</button>
+          <button type="button" class="chip" data-value="SaaS & Startup"><svg><use href="#i-saas"/></svg>SaaS &amp; Startup</button>
+          <button type="button" class="chip" data-value="Online store"><svg><use href="#i-shop"/></svg>Online store</button>
+          <button type="button" class="chip" data-value="Portfolio"><svg><use href="#i-portfolio"/></svg>Portfolio</button>
+          <button type="button" class="chip" data-value="Blog & Media"><svg><use href="#i-blog"/></svg>Blog &amp; Media</button>
+          <button type="button" class="chip" data-value="Agency"><svg><use href="#i-agency"/></svg>Agency</button>
+          <button type="button" class="chip" data-value="Restaurant"><svg><use href="#i-food"/></svg>Restaurant</button>
+          <button type="button" class="chip" data-value="Real estate"><svg><use href="#i-home"/></svg>Real estate</button>
+          <button type="button" class="chip" data-value="Personal"><svg><use href="#i-person"/></svg>Personal</button>
+          <button type="button" class="chip" data-value="Education"><svg><use href="#i-edu"/></svg>Education</button>
+          <button type="button" class="chip" data-value="Events"><svg><use href="#i-event"/></svg>Events</button>
+          <button type="button" class="chip" data-value="Other"><svg><use href="#i-more"/></svg>Other</button>
+        </div>
+        <div class="actions">
+          <p class="error" id="err1" role="alert"></p>
+          <button type="button" class="btn btn-primary" data-next="2">Continue <svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="panel" data-panel="2" hidden>
+        <h2>Refine the look and structure.</h2>
+        <p class="hint">Everything here is optional.</p>
+        <p class="sub">Style</p>
+        <div class="chips" role="group" aria-label="Style" data-single="style">
+          <button type="button" class="chip" data-value="Minimal">Minimal</button>
+          <button type="button" class="chip" data-value="Bold">Bold</button>
+          <button type="button" class="chip" data-value="Editorial">Editorial</button>
+          <button type="button" class="chip" data-value="Corporate">Corporate</button>
+          <button type="button" class="chip" data-value="Playful">Playful</button>
+        </div>
+        <p class="sub">Structure</p>
+        <div class="chips" role="group" aria-label="Structure" data-single="structure">
+          <button type="button" class="chip" data-value="Single page">Single page</button>
+          <button type="button" class="chip" data-value="Multi-page">Multi-page</button>
+        </div>
+        <p class="sub">Sections you need</p>
+        <div class="chips" role="group" aria-label="Sections" data-multi="sections">
+          <button type="button" class="chip" data-value="Pricing">Pricing</button>
+          <button type="button" class="chip" data-value="Blog">Blog</button>
+          <button type="button" class="chip" data-value="Shop">Shop</button>
+          <button type="button" class="chip" data-value="Gallery">Gallery</button>
+          <button type="button" class="chip" data-value="Booking">Booking</button>
+          <button type="button" class="chip" data-value="Team">Team</button>
+          <button type="button" class="chip" data-value="FAQ">FAQ</button>
+          <button type="button" class="chip" data-value="Contact form">Contact form</button>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" data-next="1"><svg><use href="#i-back"/></svg> Back</button>
+          <button type="button" class="btn btn-primary" data-next="3">See your brief <svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="panel" data-panel="3" hidden>
+        <h2>Your template brief.</h2>
+        <p class="hint">Template matching isn't live yet. Droplates is in development, and this is a preview of how the finder will work.</p>
+        <dl class="brief" id="brief"></dl>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" data-next="2"><svg><use href="#i-back"/></svg> Back</button>
+          <button type="button" class="btn btn-primary" id="restart">Start over</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <section id="categories" class="wrap section">
+    <div class="section-head">
+      <h2>Built for every kind of site.</h2>
+      <p>Categories Droplates is designing for. Templates are in development.</p>
+    </div>
+    <div class="cards">
+      <article class="card"><div class="mock mock-saas" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="card-body"><h3>SaaS landing</h3><p>In development</p></div></article>
+      <article class="card"><div class="mock mock-shop" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="card-body"><h3>Online store</h3><p>In development</p></div></article>
+      <article class="card"><div class="mock mock-folio" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="card-body"><h3>Creative portfolio</h3><p>In development</p></div></article>
+      <article class="card"><div class="mock mock-blog" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="card-body"><h3>Blog &amp; magazine</h3><p>In development</p></div></article>
+    </div>
+  </section>
+
+  <section id="how" class="wrap section">
+    <div class="section-head">
+      <h2>How it will work.</h2>
+    </div>
+    <ol class="how">
+      <li><span>01</span><h3>Describe</h3><p>Tell Droplates what you're building, in your own words.</p></li>
+      <li><span>02</span><h3>Refine</h3><p>Narrow down by style, structure and the sections you need.</p></li>
+      <li><span>03</span><h3>Build</h3><p>Get matched templates to start from. Details [to be confirmed].</p></li>
+    </ol>
+  </section>
 </main>
 
-<footer class="footer">
+<footer class="wrap footer">
   <p>Droplates is a product of <a href="https://guidify.eu" rel="noopener">Guidify</a>, a registered Belgian sole proprietorship.</p>
   <p>© <span id="y">2026</span> Guidify</p>
 </footer>
-<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="app.js"></script>
 </body>
 </html>
