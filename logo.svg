@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="440 400 1120 1160" role="img" aria-label="Droplates">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4d4d4d"/><stop offset="1" stop-color="#000"/></linearGradient></defs>
-  <polygon points="1000,1290 1333,1400 1000,1520 667,1400" fill="url(#g)"/>
-  <polygon points="1000,1010 1480,1173 1000,1335 520,1173" fill="#b8b8b8" stroke="#b8b8b8" stroke-width="56" stroke-linejoin="round"/>
-  <polygon points="1000,465 1480,800 1000,1090 520,800" fill="#fff" stroke="#fff" stroke-width="56" stroke-linejoin="round"/>
-</svg>
