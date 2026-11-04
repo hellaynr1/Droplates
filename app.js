@@ -31,7 +31,7 @@
     const s = stage.getBoundingClientRect();
     const pts = layers.map(l => { const b = l.getBoundingClientRect(); return { x: b.left - s.left + 4, y: b.top - s.top + b.height / 2 }; });
     const cy = (pts[0].y + pts[2].y) / 2, S = m ? 58 : 80;
-    const startX = Math.min(...pts.map(q => q.x)) - (m ? 20 : 44);
+    const startX = Math.min(...pts.map(q => q.x)) - (m ? 20 : 40);
     pts.forEach((q, k) => {
       const li = labels[k], w = wires[k], ly = cy + (k - 1) * S;
       li.style.setProperty('--x', startX + 'px'); li.style.setProperty('--y', ly + 'px');
