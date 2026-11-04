@@ -1,0 +1,25 @@
+:root{--bg:#080808;--card:#121212;--text:#fff;--muted:#999;--border:#292929;--ease:cubic-bezier(.2,.6,.2,1)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;overflow-x:hidden}
+a{color:inherit}
+.nav,.hero,.footer{width:100%;max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px}
+.nav{display:flex;align-items:center;justify-content:space-between;padding-top:28px;padding-bottom:28px}
+.brand{font-weight:600;font-size:17px;letter-spacing:-.02em;text-decoration:none}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);border:1px solid var(--border);background:var(--card);border-radius:999px;padding:6px 12px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:80px;padding-bottom:120px}
+.eyebrow{margin:0 0 24px;font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+h1{margin:0;max-width:16ch;font-size:clamp(40px,7vw,88px);line-height:1.02;letter-spacing:-.045em;font-weight:600}
+.lead{margin:32px 0 40px;max-width:52ch;font-size:clamp(17px,1.6vw,20px);line-height:1.6;color:var(--muted)}
+.btn{align-self:flex-start;display:inline-flex;gap:10px;align-items:center;text-decoration:none;font-size:15px;font-weight:500;padding:12px 20px;border:1px solid var(--border);border-radius:10px;background:var(--card);transition:border-color 200ms var(--ease),background-color 200ms var(--ease)}
+.btn span{transition:transform 200ms var(--ease)}
+.btn:hover{border-color:#555;background:#171717}
+.btn:hover span{transform:translateX(3px)}
+.btn:focus-visible,.brand:focus-visible,.footer a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.footer{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;border-top:1px solid var(--border);padding-top:28px;padding-bottom:36px;font-size:14px;color:var(--muted)}
+.footer p{margin:0}
+.footer a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border);transition:color 200ms var(--ease),text-decoration-color 200ms var(--ease)}
+.footer a:hover{color:var(--text);text-decoration-color:var(--muted)}
+@media (max-width:600px){.hero{padding-top:48px;padding-bottom:80px}.lead{margin:24px 0 32px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
