@@ -15,7 +15,7 @@ svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke
 .nav.scrolled{border-bottom-color:var(--border)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;letter-spacing:-.02em;text-decoration:none}
-.logo{width:18px;height:18px;border-radius:50%;border:3px solid #fff;border-top-color:transparent;transform:rotate(-30deg)}
+.logo{width:22px;height:22px;display:block}
 .links{display:flex;gap:28px;font-size:14px}
 .links a{color:var(--muted);text-decoration:none;transition:color var(--t) var(--ease)}
 .links a:hover{color:var(--text)}
