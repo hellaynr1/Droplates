@@ -39,3 +39,4 @@
 .hero h1 span.t{color:inherit}
 [data-preset="studio"] .hero h1 span.t{font-style:normal}
 [data-preset="corporate"] .work{grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr))}
+.logo img{height:26px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px}

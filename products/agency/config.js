@@ -16,7 +16,7 @@ window.SITE_CONFIG = {
     buttons: "auto",           // "auto" | "pill" | "rounded" | "square"
     density: "normal"          // "compact" | "normal" | "spacious"
   },
-  brand: { name: "Forma", logo: "" },
+  brand: { name: "Forma", logo: "" },         // logo: path to an image, e.g. "assets/logo.svg". Shown next to the name.
   nav: { services: "Services", work: "Work", about: "About", cta: "Start a project" },
   hero: {
     title: "We build brands",

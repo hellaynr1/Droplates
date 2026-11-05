@@ -16,7 +16,7 @@ window.SITE_CONFIG = {
     buttons: "auto",           // "auto" | "pill" | "rounded" | "square"
     density: "normal"          // "compact" | "normal" | "spacious"
   },
-  brand: { name: "Mara Lind", logo: "" },
+  brand: { name: "Mara Lind", logo: "" },         // logo: path to an image, e.g. "assets/logo.svg". Shown next to the name.
   nav: { work: "Work", about: "About", contact: "Contact" },
   hero: {
     title: "Design that feels",

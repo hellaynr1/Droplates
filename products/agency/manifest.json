@@ -49,6 +49,11 @@
     "Studio name"
    ],
    [
+    "brand.logo",
+    "Logo",
+    "image"
+   ],
+   [
     "seo.siteName",
     "Site title"
    ],

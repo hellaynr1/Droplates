@@ -58,3 +58,4 @@ nav{background:var(--navbg)}
 [data-preset="contemporary"] .grid .it:last-child:nth-child(even){grid-column:1/-1}
 [data-preset="contemporary"] .grid .it:last-child:nth-child(even) .im{aspect-ratio:21/9}
 .grid + p{margin-top:32px!important}
+.logo img{height:26px;width:auto;display:inline-block;vertical-align:middle;margin-right:8px}

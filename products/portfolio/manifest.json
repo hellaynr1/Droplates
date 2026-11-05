@@ -45,6 +45,11 @@
     "Name"
    ],
    [
+    "brand.logo",
+    "Logo",
+    "image"
+   ],
+   [
     "seo.siteName",
     "Site title"
    ],
