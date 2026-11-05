@@ -85,6 +85,7 @@
       site = w.SITE; defaults = JSON.parse(JSON.stringify(w.SITE.defaults));
       state = site.validate(load() || defaults);
       build();
+      if (new URLSearchParams(location.search).get("download") === "1") setTimeout(function () { $("#download").click(); }, 300);
     }
     site = w.SITE; push();
     var p = frame.contentWindow.location.pathname.split("/").pop() || "index.html";

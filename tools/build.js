@@ -61,7 +61,7 @@ const foot = depth => {
 const card = t => `<a class="tcard" href="${'/templates/' + t.slug + '/'}" data-slug="${t.slug}">
   <div class="tthumb ${t.tier}" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div class="tbody">
-    <div class="trow"><span class="tier">${M.tiers[t.tier]}</span><span class="status">${t.preview_url ? 'Preview available' : 'Planned'}</span></div>
+    <div class="trow"><span class="tier">${M.tiers[t.tier]}</span><span class="status">${t.status === 'released' ? 'Free download' : 'Planned'}</span></div>
     <h3>${esc(t.name)}</h3>
     <p>${esc(M.categories[t.category])}</p>
     <div class="trow"><span class="price">${eur(t.price)}</span><span class="plat">${t.platforms.map(p => M.platforms[p]).join(' · ')}</span></div>
@@ -98,7 +98,7 @@ for (const t of T) {
           <button type="button" data-size="mobile" aria-pressed="false">Mobile</button>
         </div>
         <div class="frame" data-size="desktop">${t.preview_url ? `<iframe src="${t.preview_url}" title="${esc(t.name)} preview" loading="lazy" tabindex="-1"></iframe>` : '<div class="mock-page"><i></i><i></i><i></i><i></i></div>'}</div>
-        ${t.preview_url ? `<p class="pnote"><a class="btn btn-primary" href="../../preview/?t=${t.slug}">Open live preview</a></p>` : '<p class="pnote">Live preview is available once this template is verified.</p>'}
+        ${t.preview_url ? `<p class="pnote"><a class="btn" href="../../preview/?t=${t.slug}">Open live preview</a></p>` : '<p class="pnote">Live preview is available once this template is verified.</p>'}
       </div>
       <h2 class="sec">About</h2><p class="lead2">${esc(t.summary)}</p>
       <h2 class="sec">Features</h2><ul class="feat">${t.features.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
@@ -112,7 +112,9 @@ for (const t of T) {
       <p class="bcat">${esc(M.categories[t.category])}</p>
       <p class="bprice">${eur(t.price)}${t.price ? '<small> one-time</small>' : ''}</p>
       <button type="button" class="btn btn-primary wish" data-slug="${t.slug}" aria-pressed="false">Save to wishlist</button>
-      <p class="bnote">Purchasing is not available yet. Checkout will be added at launch.</p>
+      ${t.status === 'released' ? `<div class="acts"><a class="btn btn-primary" href="../../studio/?t=${t.slug}">Customize</a><a class="btn" href="../../studio/?t=${t.slug}&download=1">Download free</a></div>
+      <dl class="facts"><div><dt>Version</dt><dd>${esc(t.version)}</dd></div><div><dt>Pages</dt><dd>${t.pages.map(esc).join(', ')}</dd></div><div><dt>Style presets</dt><dd>${t.presets.length}: ${t.presets.map(esc).join(', ')}</dd></div><div><dt>Licence</dt><dd>Free licence (draft, to be confirmed)</dd></div></dl>`
+      : '<p class="bnote">Purchasing is not available yet. Checkout will be added at launch.</p>'}
       <a class="link-arrow" href="../../match/">Find a template for my project ${ICON}</a>
     </aside>
   </div>
@@ -201,7 +203,7 @@ write('support/index.html', head('Support', 'Contact Droplates support.', 1) + `
 write('docs/index.html', head('Documentation', 'Installation and customisation guides for Droplates templates.', 1) + `
 <section class="wrap page-head"><p class="eyebrow"><span>Docs</span> Documentation</p><h1>Installation guides</h1><p class="sub">Each guide is written when the template is verified. Steps below are planned.</p></section>
 <section class="wrap"><ul class="doclist">${T.map(t => `<li><a href="${t.slug}/"><b>${esc(t.name)}</b><span>${esc(M.platforms[t.platforms[0]])} · ${M.tiers[t.tier]} · Planned</span></a></li>`).join('')}</ul></section>` + foot(1));
-for (const t of T) write(`docs/${t.slug}/index.html`, head(t.name + ' docs', 'Installation and customisation guide for ' + t.name + '.', 2) + `
+for (const t of T.filter(x => x.status !== 'released')) write(`docs/${t.slug}/index.html`, head(t.name + ' docs', 'Installation and customisation guide for ' + t.name + '.', 2) + `
 <section class="wrap page-head"><p class="eyebrow"><span>Docs</span> ${esc(t.name)}</p><h1>${esc(t.name)} guide</h1><p class="sub">Planned. Steps are written once the template is verified.</p></section>
 <section class="wrap block"><ol class="steps2"><li><b>Download</b><span>Get the template files after purchase [flow to be confirmed].</span></li><li><b>Install</b><span>Platform steps: ${t.platforms.map(p => M.platforms[p]).join(', ')} [to be confirmed].</span></li><li><b>Customise</b><span>Edit text, images and colours.</span></li><li><b>Launch</b><span>Connect your domain and publish.</span></li></ol></section>` + foot(2));
 
@@ -230,4 +232,14 @@ write('preview/index.html', `<!doctype html><html lang="en"><head><meta charset=
 </header>
 <main class="pv-stage"><iframe id="pv-frame" title="Template preview"></iframe><p class="pv-empty" id="pv-empty" hidden>No live preview for this template yet. <a href="../templates/">Back to templates</a>.</p></main>
 <script>window.DROPLATES_DATA = ${JSON.stringify(D)};</script><script src="../pages.js" defer></script></body></html>`);
+for (const t of T.filter(x => x.status === 'released')) write(`docs/${t.slug}/index.html`, head(t.name + ' docs', 'Setup and customisation guide for the ' + t.name + ' template.', 2) + `
+<section class="wrap page-head"><p class="eyebrow"><span>Docs</span> ${esc(t.name)} · v${esc(t.version)}</p><h1>${esc(t.name)} guide</h1><p class="sub">Plain HTML, CSS and JavaScript. No build step.</p></section>
+<section class="wrap block"><ol class="steps2">
+<li><b>Customize</b><span>Open the <a href="../../studio/?t=${t.slug}">Template Studio</a>, choose a preset and edit your branding.</span></li>
+<li><b>Download</b><span>Click Download free. You get a ZIP with every page, config.js, README and licence.</span></li>
+<li><b>Edit</b><span>Change settings in config.js. Replace demo text and grey image placeholders in the HTML pages.</span></li>
+<li><b>Deploy</b><span>Upload the folder to GitHub Pages, Netlify, Cloudflare Pages or any web host.</span></li></ol></section>
+<section class="wrap block"><h2 class="h2">Contact form</h2><p class="lead2">The form validates but sends nothing until you set <code>contact.formEndpoint</code> in config.js to a form service URL (for example Formspree or Basin) or your own endpoint.</p>
+<h2 class="h2" style="margin-top:40px">Pages</h2><ul class="feat">${t.pages.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+<h2 class="h2" style="margin-top:40px">Style presets</h2><ul class="feat">${t.presets.map(p => `<li>${esc(p)}</li>`).join('')}</ul></section>` + foot(2));
 console.log('built', T.length, 'product pages');

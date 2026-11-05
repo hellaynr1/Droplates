@@ -1,3 +1,4 @@
+[hidden]{display:none!important}
 /* Shared styles for catalog, product, match, custom, support, docs, legal pages */
 .page-head{padding-top:56px}
 .page-head h1{margin:0;font-size:clamp(34px,4.4vw,56px);letter-spacing:-.035em;line-height:1.05;font-weight:600}
@@ -132,3 +133,6 @@
 .pv-stage iframe{width:100%;height:100%;border:1px solid var(--border);border-radius:10px;background:#fff;transition:width 300ms var(--ease)}
 .pv-empty{color:var(--muted);align-self:center}
 @media (max-width:760px){.pv-bar{flex-wrap:wrap;height:auto;padding:10px 12px;gap:10px}.pv-name{flex:1 1 auto}.pv-act .btn:first-child,.pv-bar .device-switch{display:none}.pv-stage{padding:0}.pv-stage iframe{border:0;border-radius:0}}
+
+.acts{display:grid;gap:8px}.acts .btn{justify-content:center;width:100%}
+.facts{margin:18px 0 0;display:grid;gap:10px;font-size:13px}.facts dt{color:var(--dim)}.facts dd{margin:2px 0 0;color:var(--muted)}

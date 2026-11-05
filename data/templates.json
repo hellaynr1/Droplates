@@ -14,7 +14,10 @@
    "saas": "SaaS / startup",
    "saas-ai": "Advanced SaaS / AI",
    "ecommerce": "E-commerce",
-   "fashion": "Fashion / lifestyle"
+   "fashion": "Fashion / lifestyle",
+   "saas-tech": "SaaS & Technology",
+   "portfolio": "Portfolio & Personal Brand",
+   "agency": "Agencies & Services"
   },
   "platforms": {
    "html": "HTML",
@@ -31,87 +34,150 @@
  },
  "templates": [
   {
-   "slug": "start",
-   "name": "Start",
+   "slug": "saas",
+   "name": "SaaS & Technology",
    "tier": "free",
-   "status": "planned",
+   "status": "released",
+   "version": "1.0.0",
    "price": 0,
-   "category": "startup-landing",
+   "category": "saas-tech",
    "goals": [
     "launch-startup"
-   ],
-   "platforms": [
-    "html",
-    "wordpress"
-   ],
-   "budget": 1,
-   "tags": [
-    "waitlist",
-    "landing",
-    "minimal"
-   ],
-   "summary": "A startup landing page with a waitlist section, built to be used as-is.",
-   "features": [
-    "Hero, problem and solution sections",
-    "Waitlist form placeholder (connect your own provider)",
-    "Responsive layout",
-    "Editable text and colours"
-   ],
-   "preview_url": "/demos/saas/"
-  },
-  {
-   "slug": "essential",
-   "name": "Essential",
-   "tier": "free",
-   "status": "planned",
-   "price": 0,
-   "category": "service",
-   "goals": [
-    "offer-services"
-   ],
-   "platforms": [
-    "html",
-    "wordpress"
-   ],
-   "budget": 1,
-   "tags": [
-    "freelance",
-    "services",
-    "contact"
-   ],
-   "summary": "A simple freelance or service website with services, about and contact pages.",
-   "features": [
-    "Home, services, about and contact sections",
-    "Contact form placeholder",
-    "Responsive layout"
-   ],
-   "preview_url": "/demos/portfolio/"
-  },
-  {
-   "slug": "product",
-   "name": "Product",
-   "tier": "free",
-   "status": "planned",
-   "price": 0,
-   "category": "single-product",
-   "goals": [
-    "sell-products"
    ],
    "platforms": [
     "html"
    ],
    "budget": 1,
    "tags": [
-    "single-product",
-    "promo",
-    "landing"
+    "saas",
+    "startup",
+    "software",
+    "ai",
+    "pricing",
+    "dashboard",
+    "dark"
    ],
-   "summary": "A single-product promotional landing page.",
+   "summary": "A complete 5-page website for software companies, AI startups and digital products.",
    "features": [
-    "Product hero, benefits and FAQ",
-    "Call-to-action sections",
-    "Responsive layout"
-   ]
+    "Product hero with dashboard preview",
+    "Interactive feature tabs",
+    "Pricing cards with monthly/yearly switch",
+    "FAQ accordion",
+    "Demo testimonials",
+    "Contact form (connect your own form service)",
+    "Light and dark themes"
+   ],
+   "pages": [
+    "Home",
+    "Features",
+    "Pricing",
+    "About",
+    "Contact"
+   ],
+   "presets": [
+    "Minimal",
+    "Modern",
+    "Bold"
+   ],
+   "preview_url": "/products/saas/index.html"
+  },
+  {
+   "slug": "portfolio",
+   "name": "Portfolio & Personal Brand",
+   "tier": "free",
+   "status": "released",
+   "version": "1.0.0",
+   "price": 0,
+   "category": "portfolio",
+   "goals": [
+    "offer-services",
+    "showcase-agency"
+   ],
+   "platforms": [
+    "html"
+   ],
+   "budget": 1,
+   "tags": [
+    "portfolio",
+    "designer",
+    "freelance",
+    "photography",
+    "gallery",
+    "minimal",
+    "personal"
+   ],
+   "summary": "A complete 5-page portfolio for designers, developers, photographers and creators.",
+   "features": [
+    "Editorial homepage",
+    "Filterable project gallery",
+    "Case study page layout",
+    "About, experience and skills",
+    "Contact form (connect your own form service)",
+    "Light and dark themes"
+   ],
+   "pages": [
+    "Home",
+    "Work",
+    "Project",
+    "About",
+    "Contact"
+   ],
+   "presets": [
+    "Editorial",
+    "Gallery",
+    "Contemporary"
+   ],
+   "preview_url": "/products/portfolio/index.html"
+  },
+  {
+   "slug": "agency",
+   "name": "Agencies & Services",
+   "tier": "free",
+   "status": "released",
+   "version": "1.0.0",
+   "price": 0,
+   "category": "agency",
+   "goals": [
+    "showcase-agency",
+    "offer-services"
+   ],
+   "platforms": [
+    "html"
+   ],
+   "budget": 1,
+   "tags": [
+    "agency",
+    "studio",
+    "consultant",
+    "services",
+    "branding",
+    "team",
+    "creative"
+   ],
+   "summary": "A complete 6-page website for creative agencies, consultants and professional services.",
+   "features": [
+    "Statement hero",
+    "Service overview and detail page",
+    "Work grid and case study",
+    "Process timeline",
+    "Team and demo testimonials",
+    "Inquiry form with budget and timeline (connect your own form service)",
+    "Light and dark themes"
+   ],
+   "pages": [
+    "Home",
+    "Services",
+    "Work",
+    "Project",
+    "About",
+    "Contact"
+   ],
+   "presets": [
+    "Contemporary",
+    "Corporate",
+    "Studio"
+   ],
+   "preview_url": "/products/agency/index.html"
   },
   {
    "slug": "studio",
