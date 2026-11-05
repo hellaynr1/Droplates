@@ -54,6 +54,11 @@
     return field(label, s);
   }
   function textCtl(path, label, type) {
+    if (type === "bool") {
+      var cb = el("input", { type: "checkbox" }); cb.checked = get(state, path) === true;
+      cb.addEventListener("change", function () { change(function (n) { set(n, path, cb.checked); }); });
+      return el("label", { class: "f inline" }, [cb, el("span", { text: label })]);
+    }
     var input = type === "textarea" ? el("textarea", { rows: "3", maxlength: "400" }) : el("input", { type: type === "email" ? "email" : type === "url" ? "url" : "text", maxlength: "400" });
     input.value = get(state, path) || "";
     input.addEventListener("input", function () { change(function (n) { set(n, path, input.value); }, path); });
@@ -104,6 +109,28 @@
       p.appendChild(textCtl(picked.key, meta ? meta[1] : "Text", meta && meta[2] === "textarea" ? "textarea" : "text"));
       if (picked.hrefKey && picked.hrefKey !== "contact.email") p.appendChild(textCtl(picked.hrefKey, "Link", "url"));
       p.appendChild(el("p", { class: "hint", text: "This text is a site setting and is used wherever it appears." }));
+    } else if (picked.kind === "item") {
+      var list = get(state, picked.list) || [], idx = picked.index, name = picked.list.split(".").filter(function (x) { return !/^\d+$/.test(x); }).pop();
+      p.firstChild.querySelector("small").textContent = "item " + (idx + 1) + " of " + list.length + " · " + name;
+      if (picked.path && typeof get(state, picked.path) === "string") {
+        var ti = el("textarea", { rows: "3", maxlength: "600" }); ti.value = get(state, picked.path);
+        ti.addEventListener("input", function () { change(function (n) { set(n, picked.path, ti.value); }, "i:" + picked.path); });
+        p.appendChild(field("Text", ti));
+      }
+      if (picked.hrefPath) {
+        var hu = el("input", { type: "text", maxlength: "400", placeholder: "page.html or https://…" }); hu.value = get(state, picked.hrefPath) || "";
+        hu.addEventListener("input", function () { change(function (n) { set(n, picked.hrefPath, hu.value); }, "h:" + picked.hrefPath); });
+        hu.addEventListener("change", function () { var ok = (get(state, picked.hrefPath) || "") === hu.value; hu.toggleAttribute("aria-invalid", !ok); if (!ok) toast("Use a page like contact.html, or a full https:// link."); });
+        p.appendChild(field("Link", hu));
+      }
+      if (picked.imgPath) p.appendChild(imageCtl("Image", get(state, picked.imgPath), function (d) { change(function (n) { set(n, picked.imgPath, d); }); renderElement(); }, function () { change(function (n) { set(n, picked.imgPath, ""); }); renderElement(); }));
+      var mv = function (fn, msg) { change(function (n) { fn(get(n, picked.list)); }); picked = null; renderElement(); toast(msg); };
+      p.appendChild(el("div", { class: "inline", style: "margin-top:4px" }, [
+        el("button", { type: "button", class: "ghost sm", text: "↑ Move up", disabled: idx === 0 ? "" : false, onclick: function () { mv(function (a) { a.splice(idx - 1, 0, a.splice(idx, 1)[0]); }, "Moved up."); } }),
+        el("button", { type: "button", class: "ghost sm", text: "↓ Move down", disabled: idx >= list.length - 1 ? "" : false, onclick: function () { mv(function (a) { a.splice(idx + 1, 0, a.splice(idx, 1)[0]); }, "Moved down."); } }),
+        el("button", { type: "button", class: "ghost sm", text: "Duplicate", disabled: list.length >= 24 ? "" : false, onclick: function () { mv(function (a) { a.splice(idx + 1, 0, clone(a[idx])); }, "Item duplicated."); } }),
+        el("button", { type: "button", class: "ghost sm danger", text: "Remove", onclick: function () { mv(function (a) { a.splice(idx, 1); }, "Item removed. Undo with Ctrl/⌘+Z."); } })]));
+      p.appendChild(el("p", { class: "hint", text: "Lists keep their design — add items with Duplicate, then edit the copy." }));
     } else if (picked.kind === "image") {
       p.appendChild(imageCtl("Image", state.images[picked.key], function (data) { change(function (n) { n.images[picked.key] = data; }); renderElement(); },
         function () { change(function (n) { delete n.images[picked.key]; }); renderElement(); }));

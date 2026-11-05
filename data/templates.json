@@ -38,7 +38,7 @@
    "name": "SaaS & Technology",
    "tier": "free",
    "status": "released",
-   "version": "1.0.0",
+   "version": "1.1.0",
    "price": 0,
    "category": "saas-tech",
    "goals": [
@@ -57,13 +57,16 @@
     "dashboard",
     "dark"
    ],
-   "summary": "A complete 5-page website for software companies, AI startups and digital products.",
+   "summary": "A complete 6-page website for software companies, AI startups and digital products.",
    "features": [
     "Product hero with dashboard preview",
-    "Interactive feature tabs",
-    "Pricing cards with monthly/yearly switch",
+    "Interactive product tour",
+    "Integrations grid",
+    "Pricing cards and comparison table from one editable list",
+    "Monthly/yearly switch",
     "FAQ accordion",
-    "Demo testimonials",
+    "Changelog page",
+    "Optional announcement banner",
     "Contact form (connect your own form service)",
     "Light and dark themes"
    ],
@@ -72,7 +75,8 @@
     "Features",
     "Pricing",
     "About",
-    "Contact"
+    "Contact",
+    "Changelog"
    ],
    "presets": [
     "Minimal",

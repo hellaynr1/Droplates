@@ -25,6 +25,10 @@
   [
    "contact.html",
    "Contact"
+  ],
+  [
+   "changelog.html",
+   "Changelog"
   ]
  ],
  "fonts": [
@@ -97,6 +101,26 @@
     "Button link"
    ]
   ],
+  "Announcement": [
+   [
+    "announcement.enabled",
+    "Show announcement banner",
+    "bool"
+   ],
+   [
+    "announcement.text",
+    "Text"
+   ],
+   [
+    "announcement.linkLabel",
+    "Link text"
+   ],
+   [
+    "announcement.linkUrl",
+    "Link",
+    "url"
+   ]
+  ],
   "Contact": [
    [
     "contact.email",
@@ -127,9 +151,9 @@
    ]
   ]
  },
- "schema": 1,
+ "schema": 2,
  "slug": "saas",
- "version": "1.0.0",
+ "version": "1.1.0",
  "edition": "free",
  "files": [
   "LICENSE.txt",
@@ -138,6 +162,7 @@
   "assets/site.js",
   "assets/styles.css",
   "assets/theme.css",
+  "changelog.html",
   "config.js",
   "contact.html",
   "features.html",

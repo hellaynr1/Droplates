@@ -125,9 +125,43 @@ const ok = (cond, msg) => { cond ? pass++ : fail++; console.log((cond ? '  ✓ '
     await q2.close();
   }
 
+  console.log('SaaS v1.1 (lists, tour, comparison, banner, changelog)');
+  {
+    const P = BASE + 'products/saas/';
+    await p.goto(P + 'pricing.html'); await p.waitForTimeout(300);
+    ok(await p.locator('.plans .plan').count() === 3, 'pricing cards render from config list');
+    ok(await p.locator('.cmp thead th').count() === 4 && await p.locator('.cmp tbody tr:not(.grp)').count() === 8, 'comparison table renders header and rows');
+    ok(await p.evaluate(() => [...document.querySelectorAll('.cmp tbody tr:not(.grp)')][0].innerText.replace(/\s+/g, ' ').trim()) === 'Projects 1 Unlimited Unlimited', 'nested list values are correct (not taken from outer item)');
+    await p.click('.toggle [data-p=y]'); ok((await p.locator('.plan.pop .pr').innerText()).startsWith('€24'), 'monthly/yearly switch uses list data');
+    await p.goto(P + 'index.html'); await p.waitForTimeout(300);
+    ok(await p.locator('[data-show="announcement.enabled"]').isHidden(), 'announcement banner off by default');
+    await p.click('.walk li:nth-of-type(3)'); ok(await p.evaluate(() => [...document.querySelectorAll('[data-shots] > [data-gen]')].map(s => s.hidden).join()) === 'true,true,false,true', 'tour step click shows its screenshot');
+    ok(await p.locator('.ints > div').count() === 6 && !/slack|stripe|postgres|segment/i.test(await p.locator('.ints').innerText()), 'integrations use generic labels');
+    await p.goto(P + 'changelog.html'); ok(await p.locator('.entry').count() === 3, 'changelog page renders entries');
+    // Studio: enable banner, edit list, duplicate a plan
+    await p.goto(BASE + 'studio/?t=saas'); await p.evaluate(() => localStorage.clear()); await p.reload(); await p.waitForSelector('#pages .row'); await p.waitForTimeout(500);
+    await p.click('.tabs [data-tab=settings]'); await p.check('#p-settings input[type=checkbox]'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => !document.getElementById('frame').contentDocument.querySelector('[data-show="announcement.enabled"]').hidden), 'Studio toggle shows the banner');
+    await p.click('#pages .row:has-text("Pricing")'); await p.waitForTimeout(1200);
+    await p.frameLocator('#frame').locator('.plan h3').nth(1).click(); await p.waitForTimeout(200);
+    await p.fill('#p-element textarea', 'Growth'); await p.waitForTimeout(200);
+    ok((await p.evaluate(() => [...document.getElementById('frame').contentDocument.querySelectorAll('.cmp thead th')].map(t => t.textContent).join('|'))).endsWith('Starter|Growth|Team'), 'editing a plan name updates cards and comparison header');
+    await p.click('#p-element button:text-is("Duplicate")'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => document.getElementById('frame').contentDocument.querySelectorAll('.plans .plan').length) === 4, 'duplicate a list item');
+    await p.click('#undo'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => document.getElementById('frame').contentDocument.querySelectorAll('.plans .plan').length) === 3, 'undo list change');
+    const [dz] = await Promise.all([p.waitForEvent('download'), p.click('#download')]);
+    const d3 = fs.mkdtempSync(path.join(os.tmpdir(), 'dz3-')); await dz.saveAs(d3 + '/x.zip');
+    execFileSync('python3', ['-c', 'import zipfile,sys;zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])', d3 + '/x.zip', d3]);
+    ok(fs.existsSync(d3 + '/droplates-saas/changelog.html'), 'export includes the changelog page');
+    const q3 = await ctx.newPage(); await q3.goto('file://' + d3 + '/droplates-saas/pricing.html');
+    ok((await q3.locator('.plan h3').nth(1).innerText()) === 'Growth' && await q3.locator('[data-show="announcement.enabled"]').isVisible(), 'exported site keeps list edits and banner setting');
+    await q3.close();
+  }
+
   console.log('Mobile');
   const m = await b.newContext({ ...devices['iPhone 13'] }); const mp = await m.newPage();
-  for (const u of ['', 'templates/', 'templates/saas/', 'studio/?t=saas', ...FREE.map(t => 'products/' + t.slug + '/index.html')]) {
+  for (const u of ['', 'templates/', 'templates/saas/', 'studio/?t=saas', ...FREE.map(t => 'products/' + t.slug + '/index.html'), 'products/saas/pricing.html', 'products/saas/changelog.html']) {
     await mp.goto(BASE + u); await mp.waitForTimeout(400);
     ok(await mp.evaluate(() => document.documentElement.scrollWidth) <= 390, 'no horizontal scroll: /' + u);
   }

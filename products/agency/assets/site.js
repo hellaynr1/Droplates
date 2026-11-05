@@ -20,6 +20,18 @@
   function hex(c) { return /^#[0-9a-f]{6}$/i.test(c) ? c : null; }
   function inkFor(c) { var n = parseInt(c.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#0a0a0a" : "#ffffff"; }
   function obj(x) { return x && typeof x === "object" && !Array.isArray(x) ? x : {}; }
+  // Validate a value against an example of the expected shape (used for lists such as plans, projects, team).
+  function like(v, ex, key) {
+    if (Array.isArray(ex)) { if (!Array.isArray(v)) return JSON.parse(JSON.stringify(ex)); return ex.length ? v.slice(0, 24).map(function (x) { return like(x, ex[0], key); }) : []; }
+    if (ex && typeof ex === "object") { var o = {}; v = obj(v); Object.keys(ex).forEach(function (k) { o[k] = k in v ? like(v[k], ex[k], k) : JSON.parse(JSON.stringify(ex[k])); }); return o; }
+    if (typeof ex === "boolean") return typeof v === "boolean" ? v : ex;
+    if (typeof ex === "number") return typeof v === "number" && isFinite(v) ? v : ex;
+    if (typeof v !== "string") return ex;
+    v = v.slice(0, 600);
+    if (/url$/i.test(key || "")) return v ? safeUrl(v) : "";
+    if (key === "image") return v && v.length < 1500000 && IMG_RE.test(v) ? v : "";
+    return v;
+  }
 
   // Migrate older schemas, then validate against defaults; invalid values fall back to defaults.
   function migrate(c) {
@@ -41,9 +53,11 @@
     if (ENUMS.buttons.indexOf(s.buttons) > -1) out.style.buttons = s.buttons;
     if (ENUMS.density.indexOf(s.density) > -1) out.style.density = s.density;
     Object.keys(out).forEach(function (g) {
-      if (["style", "content", "links", "images", "sections"].indexOf(g) > -1 || !out[g] || typeof out[g] !== "object" || !c[g]) return;
+      if (["style", "content", "links", "images", "sections"].indexOf(g) > -1 || !out[g] || typeof out[g] !== "object" || Array.isArray(out[g]) || !c[g]) return;
       Object.keys(out[g]).forEach(function (k) {
-        var v = c[g][k]; if (typeof v !== "string") return;
+        var v = c[g][k];
+        if (typeof out[g][k] === "boolean") { if (typeof v === "boolean") out[g][k] = v; return; }
+        if (typeof v !== "string") return;
         if (k === "logo" && /^data:image\/(png|jpeg|webp|svg\+xml);base64,[a-z0-9+/=]+$/i.test(v) && v.length < 400000) { out[g][k] = v; return; }
         v = v.slice(0, 400);
         if (/url|logo|endpoint|image/i.test(k) || g === "social") v = v ? safeUrl(v) : "";
@@ -51,6 +65,7 @@
         out[g][k] = v;
       });
     });
+    Object.keys(out).forEach(function (k) { if (Array.isArray(d[k]) && c[k] !== undefined) out[k] = like(c[k], d[k], k); });
     Object.keys(obj(c.content)).forEach(function (k) { var v = c.content[k]; if (KEY_RE.test(k) && typeof v === "string") out.content[k] = v.slice(0, 2000); });
     Object.keys(obj(c.links)).forEach(function (k) { var v = safeUrl(c.links[k]); if (KEY_RE.test(k) && v) out.links[k] = v; });
     Object.keys(obj(c.images)).forEach(function (k) { var v = c.images[k]; if (KEY_RE.test(k) && typeof v === "string" && v.length < 1500000 && IMG_RE.test(v)) out.images[k] = v; });
@@ -72,7 +87,59 @@
   }
   function orig(el, key, val) { var o = ORIG.get(el) || {}; if (!(key in o)) { o[key] = val; ORIG.set(el, o); } return o[key]; }
 
+  /* Lists: <div data-list="plans"><template>…<b data-k="name"></b>…</template></div> renders one copy per item.
+     data-k="field" (text, "." = the item itself), data-k-href, data-k-bg (image), data-k-class="field:class", data-k-attr="m:field,y:field",
+     data-k-initial="field" (first letter), data-k-show="field". Nested data-list inside a template renders a sub-list. */
+  // true if an element between el (exclusive) and top (inclusive when top is itself a list host) is a list host
+  function innerOf(el, top) {
+    var sawGen = el.hasAttribute("data-gen");
+    for (var p = el.parentElement; p; p = p.parentElement) {
+      if (p === top) return top.hasAttribute("data-list") && sawGen;
+      if (p.hasAttribute("data-list")) return true;
+      if (p.hasAttribute("data-gen")) sawGen = true;
+    }
+    return false;
+  }
+  function fill(top, item, path) {
+    [top].concat([].slice.call(top.querySelectorAll("*"))).forEach(function (e) {
+      if (e !== top && innerOf(e, top)) return;
+      var d = e.dataset;
+      var val = function (f) { return f === "." ? item : (item && typeof item === "object" ? item[f] : undefined); };
+      var at = function (f) { return f === "." ? path : path + "." + f; };
+      if (d.k) { var v = val(d.k); e.textContent = v == null ? "" : String(v); e.setAttribute("data-lk", at(d.k)); }
+      if (d.kInitial) { var t = String(val(d.kInitial) || "?"); e.textContent = t.charAt(0).toUpperCase(); }
+      if (d.kHref) { var u = val(d.kHref); if (u) e.setAttribute("href", u); e.setAttribute("data-lk-href", at(d.kHref)); }
+      if (d.kBg) { var b = val(d.kBg); e.style.backgroundImage = b ? 'url("' + b + '")' : ""; e.style.backgroundSize = "cover"; e.style.backgroundPosition = "center"; e.classList.toggle("has-img", !!b); e.setAttribute("data-lk-img", at(d.kBg)); }
+      if (d.kClass) d.kClass.split(",").forEach(function (p) { var kv = p.split(":"); e.classList.toggle(kv[1], !!val(kv[0])); });
+      if (d.kAttr) d.kAttr.split(",").forEach(function (p) { var kv = p.split(":"); e.setAttribute("data-" + kv[0], String(val(kv[1]) || "")); });
+      if (d.kShow) e.hidden = !val(d.kShow);
+    });
+  }
+  function renderList(host, items, path) {
+    var tpl = null; [].forEach.call(host.children, function (ch) { if (ch.tagName === "TEMPLATE") tpl = ch; });
+    if (!tpl) return;
+    [].slice.call(host.children).forEach(function (ch) { if (ch.hasAttribute("data-gen")) ch.remove(); });
+    (Array.isArray(items) ? items : []).forEach(function (item, i) {
+      var frag = tpl.content.cloneNode(true), p = path + "." + i;
+      [].slice.call(frag.children).forEach(function (top) {
+        top.setAttribute("data-gen", "");
+        if (top.hasAttribute("data-list")) renderList(top, item && item[top.dataset.list], p + "." + top.dataset.list);
+        [].slice.call(top.querySelectorAll("[data-list]")).forEach(function (sub) { if (!innerOf(sub, top)) renderList(sub, item && item[sub.dataset.list], p + "." + sub.dataset.list); });
+        fill(top, item, p);
+      });
+      host.appendChild(frag);
+    });
+  }
+  function renderLists(c) {
+    document.querySelectorAll("[data-list]").forEach(function (host) {
+      if (host.closest("template,[data-gen]")) return;
+      renderList(host, get(c, host.dataset.list), host.dataset.list);
+    });
+  }
+
   function apply(c) {
+    renderLists(c);
+    document.querySelectorAll("[data-show]").forEach(function (el) { el.hidden = get(c, el.dataset.show) !== true || (!editing && sessionStorage.getItem("dp-dismiss-" + el.dataset.show) === "1"); });
     root.dataset.preset = c.preset; root.dataset.theme = c.theme; root.dataset.density = c.style.density;
     if (c.style.buttons === "auto") delete root.dataset.buttons; else root.dataset.buttons = c.style.buttons;
     ["--accent", "--band-accent"].forEach(function (v) {
@@ -106,13 +173,13 @@
       document.title = (page ? page + " · " : "") + c.seo.siteName;
       var md = document.querySelector('meta[name="description"]'); if (md) md.content = c.seo.description;
     }
-    if (editing) placeTag();
+    if (editing) { placeTag(); document.querySelectorAll("[data-lk],[data-lk-img]").forEach(function (el) { if (!el.hasAttribute("tabindex") && !/^(A|BUTTON)$/.test(el.tagName)) el.setAttribute("tabindex", "0"); }); }
   }
   var imgStyle = document.createElement("style"); imgStyle.textContent = ".has-img{color:transparent!important}"; document.head.appendChild(imgStyle);
 
   /* ---------- Studio edit mode (only active when the Studio asks; never in a downloaded site) ---------- */
   var editing = false, selected = null, tag = null, studio = window.parent !== window ? window.parent : null;
-  var EDITABLE = "[data-c],[data-e],[data-el],[data-ei]";
+  var EDITABLE = "[data-c],[data-e],[data-el],[data-ei],[data-lk],[data-lk-img]";
   function send(msg) { if (studio) studio.postMessage(msg, location.origin); }
   function sectionsInfo() {
     var seen = {}, list = [];
@@ -126,6 +193,12 @@
   function describe(el) {
     var sec = el.closest("[data-s]"), info = { section: sec ? sec.dataset.s : null, sectionLabel: sec ? sec.dataset.sLabel : "Header" };
     if (el.dataset.ei) return Object.assign(info, { kind: "image", key: el.dataset.ei, label: "Image" });
+    if (el.dataset.lk || el.dataset.lkImg) {
+      var path = el.dataset.lk || el.dataset.lkImg, segs = path.split("."), j = -1;
+      segs.forEach(function (x, i) { if (/^\d+$/.test(x)) j = i; });
+      return Object.assign(info, { kind: "item", path: el.dataset.lk || null, hrefPath: el.dataset.lkHref || null, imgPath: el.dataset.lkImg || null,
+        list: segs.slice(0, j).join("."), index: +segs[j], value: el.textContent, label: el.dataset.lkImg && !el.dataset.lk ? "Image" : "List item" });
+    }
     if (el.dataset.c) return Object.assign(info, { kind: "config", key: el.dataset.c, label: el.dataset.c, value: el.textContent, hrefKey: el.dataset.cHref || null });
     var o = ORIG.get(el) || {};
     var d = Object.assign(info, { kind: el.dataset.el ? "link" : "text", key: el.dataset.e || null, linkKey: el.dataset.el || null, value: el.textContent,
@@ -174,6 +247,18 @@
     else if (m.type === "droplates:scroll") { var s = document.querySelector('[data-s="' + String(m.section).replace(/[^a-z0-9-]/g, "") + '"]'); if (s && !s.hidden) s.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
     else if (m.type === "droplates:deselect") select(null);
   });
+
+  // Product tour: clicking a step shows its screenshot
+  document.addEventListener("click", function (e) {
+    var step = e.target.closest("[data-tour] [data-steps] > [data-gen]"); if (!step || editing) return;
+    var tour = step.closest("[data-tour]"), steps = [].slice.call(tour.querySelectorAll("[data-steps] > [data-gen]")), i = steps.indexOf(step);
+    steps.forEach(function (s, k) { s.classList.toggle("on", k === i); s.setAttribute("aria-current", k === i ? "step" : "false"); });
+    tour.querySelectorAll("[data-shots] > [data-gen]").forEach(function (s, k) { s.hidden = k !== i; });
+    var bar = tour.querySelector("[data-progress]"); if (bar) bar.style.width = ((i + 1) / steps.length * 100) + "%";
+  });
+  function initTours() { document.querySelectorAll("[data-tour]").forEach(function (t) { var first = t.querySelector("[data-steps] > [data-gen]"); if (first && !t.querySelector("[data-steps] > .on")) { first.classList.add("on"); t.querySelectorAll("[data-shots] > [data-gen]").forEach(function (s, k) { s.hidden = k !== 0; }); var bar = t.querySelector("[data-progress]"), n = t.querySelectorAll("[data-steps] > [data-gen]").length; if (bar && n) bar.style.width = (100 / n) + "%"; } }); }
+  initTours(); var _apply = window.SITE.apply; window.SITE.apply = function (c) { var r = _apply(c); initTours(); return r; };
+  document.addEventListener("click", function (e) { var x = e.target.closest("[data-dismiss]"); if (!x || editing) return; var el = x.closest("[data-show]"); if (el) { el.hidden = true; try { sessionStorage.setItem("dp-dismiss-" + el.dataset.show, "1"); } catch (er) {} } });
 
   // Mobile menu
   var nav = document.querySelector("nav"), tog = document.querySelector(".nav-toggle");

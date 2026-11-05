@@ -53,11 +53,14 @@ def inside(n, pred):
 
 def annotate(path, page):
     src = open(path).read()
-    if 'data-s="' in src: return 0
     p = P(src); p.feed(src)
     inserts = []  # (pos, text)
     main = next((n for n in walk(p.root) if n.tag == 'main'), None)
     counters = {'t': 0, 'l': 0, 'i': 0, 's': 0}
+    for kind, attr in (('t', 'data-e'), ('l', 'data-el'), ('i', 'data-ei'), ('s', 'data-s')):  # continue numbering so existing IDs never change
+        nums = [int(n) for n in re.findall(attr + r'="' + re.escape(page) + '-' + kind + r'(\d+)"', src)]
+        counters[kind] = max(nums) if nums else 0
+    start_sections = counters['s']
     def add(n, attr):
         inserts.append((n.open_end - (2 if src[n.open_end - 2] == '/' else 1), ' ' + attr))
     LABELS = {'logos': 'Customer logos', 'split': 'Code and live feed', 'bento': 'Features grid', 'stats': 'Stats', 'ctab': 'Call to action',
@@ -78,7 +81,7 @@ def annotate(path, page):
         return 'Section'
     if main:
         groups = []
-        for sec in main.children:
+        for sec in [x for x in main.children if 'data-s' not in x.attrs]:
             cl = classes(sec); role = sec.attrs.get('role')
             joins = groups and (role in ('tabpanel', 'tablist') or not cl or
                                 (groups[-1]['lead'] in ('sh', 'chips') and not (cl & STANDALONE) and 'sh' not in cl))
@@ -86,16 +89,18 @@ def annotate(path, page):
             lead = 'sh' if 'sh' in cl else 'chips' if 'chips' in cl else 'x'
             groups.append({'lead': lead, 'els': [sec]})
         for i, g in enumerate(groups):
-            sid = f'{page}-s{i + 1}'
+            sid = f'{page}-s{start_sections + i + 1}'
             label = label_of(g['els'][0])
             if label == 'Section' and len(g['els']) > 1: label = label_of(g['els'][1])
             label = html.escape(re.sub(r'\s+', ' ', label)[:40], quote=True)
-            optional = 'true' if i > 0 and not any(d.attrs.get('id') == 'cf' for e in g['els'] for d in walk(e)) else 'false'
+            optional = 'true' if (start_sections + i) > 0 and not any(d.attrs.get('id') == 'cf' for e in g['els'] for d in walk(e)) else 'false'
             for e in g['els']: add(e, f'data-s="{sid}" data-s-label="{label}" data-s-optional="{optional}"')
             counters['s'] += 1
     for n in walk(p.root):
         if not main or not inside(n, lambda x: x is main): continue
         if 'data-c' in n.attrs or 'data-c-href' in n.attrs or classes(n) & SKIP_CLASSES: continue
+        if any(a in n.attrs for a in ('data-e', 'data-el', 'data-ei', 'data-k', 'data-list', 'data-show')) or n.tag == 'template': continue
+        if inside(n, lambda x: x.tag == 'template' or 'data-list' in x.attrs or 'data-show' in x.attrs): continue
         if inside(n, lambda x: 'data-c' in x.attrs): continue
         if n.tag in ('form', 'label', 'select', 'option', 'textarea', 'input') or inside(n, lambda x: x.tag in ('form', 'button', 'select', 'label')): continue
         cl = classes(n)
