@@ -32,6 +32,7 @@
       if (g === "style" || !out[g] || typeof out[g] !== "object" || !c[g]) return;
       Object.keys(out[g]).forEach(function (k) {
         var v = c[g][k]; if (typeof v !== "string") return;
+        if (k === "logo" && /^data:image\/(png|jpeg|webp|svg\+xml);base64,[a-z0-9+/=]+$/i.test(v) && v.length < 400000) { out[g][k] = v; return; }
         v = v.slice(0, 400);
         if (/url|logo|endpoint|image/i.test(k) || g === "social") v = v ? safeUrl(v) : "";
         if (k === "email" && v && !/^\S+@\S+\.\S+$/.test(v)) return;
@@ -56,8 +57,10 @@
   function apply(c) {
     root.dataset.preset = c.preset; root.dataset.theme = c.theme; root.dataset.density = c.style.density;
     if (c.style.buttons === "auto") delete root.dataset.buttons; else root.dataset.buttons = c.style.buttons;
-    if (c.style.accent) { root.style.setProperty("--accent", c.style.accent); root.style.setProperty("--accent-ink", inkFor(c.style.accent)); }
-    else { root.style.removeProperty("--accent"); root.style.removeProperty("--accent-ink"); }
+    ["--accent", "--band-accent"].forEach(function (v) {
+      if (c.style.accent) { root.style.setProperty(v, c.style.accent); root.style.setProperty(v + "-ink", inkFor(c.style.accent)); }
+      else { root.style.removeProperty(v); root.style.removeProperty(v + "-ink"); }
+    });
     root.style.setProperty("--font", '"' + c.style.font + '",system-ui,sans-serif'); loadFont(c.style.font);
     if (c.style.headFont) { root.style.setProperty("--font-head", '"' + c.style.headFont + '",serif'); loadFont(c.style.headFont); }
     else root.style.removeProperty("--font-head");

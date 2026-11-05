@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Studio — Droplates</title>
+<meta name="description" content="Customise a Droplates template and download it free.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<header class="bar">
+  <a class="back" href="../templates/" aria-label="Back to templates"><img src="../logo-mark.png" alt="" width="18" height="18"><span>Studio</span></a>
+  <p class="tname" id="tname">Loading…</p>
+  <label class="sr" for="page">Page</label>
+  <select id="page" class="ctl"></select>
+  <div class="seg" role="group" aria-label="Preview size">
+    <button type="button" data-w="100%" aria-pressed="true">Desktop</button><button type="button" data-w="820px" aria-pressed="false">Tablet</button><button type="button" data-w="390px" aria-pressed="false">Mobile</button>
+  </div>
+  <button type="button" class="ghost" id="full" aria-label="Full screen preview">Full screen</button>
+  <button type="button" class="ghost" id="reset">Reset</button>
+  <button type="button" class="primary" id="download">Download free</button>
+</header>
+<div class="layout">
+  <aside class="panel" id="panel" aria-label="Customise">
+    <div class="sheet-head"><b>Customise</b><button type="button" class="ghost" id="close-sheet">Done</button></div>
+    <form id="form" autocomplete="off"></form>
+    <p class="hint">Changes apply to the live preview and to your download. Text is saved in this browser only.</p>
+  </aside>
+  <main class="stage" id="stage">
+    <iframe id="frame" title="Template preview"></iframe>
+  </main>
+</div>
+<button type="button" class="primary fab" id="open-sheet">Customise</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="studio.js"></script>
+</body>
+</html>
