@@ -16,8 +16,8 @@
   });
 
   /* Device switch on product pages */
-  $$('.device-switch button').forEach(b => b.addEventListener('click', () => {
-    $$('.device-switch button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+  $$('.pshot .device-switch button').forEach(b => b.addEventListener('click', () => {
+    $$('.pshot .device-switch button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
     $('.frame').dataset.size = b.dataset.size;
   }));
 
@@ -102,4 +102,20 @@
   };
   bind('quote', 'qerr', 'qdone', 'Please complete the required fields. Email must be valid and consent is needed.');
   bind('support', 'serr', 'sdone', 'Please complete the required fields.');
+})();
+/* Template preview viewer */
+(() => {
+  const frame = document.getElementById('pv-frame'); if (!frame) return;
+  const D = window.DROPLATES_DATA, slug = new URLSearchParams(location.search).get('t');
+  const t = D && D.templates.find(x => x.slug === slug);
+  if (!t || !t.preview_url) { frame.hidden = true; document.getElementById('pv-empty').hidden = false; return; }
+  document.title = t.name + ' preview — Droplates';
+  document.getElementById('pv-name').textContent = t.name + ' · ' + D.meta.tiers[t.tier];
+  frame.src = t.preview_url; frame.title = t.name + ' preview';
+  document.getElementById('pv-open').href = t.preview_url;
+  document.getElementById('pv-info').href = '../templates/' + t.slug + '/';
+  document.querySelectorAll('.pv-bar .device-switch button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.pv-bar .device-switch button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+    frame.style.width = b.dataset.w;
+  }));
 })();

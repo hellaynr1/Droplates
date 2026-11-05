@@ -61,7 +61,7 @@ const foot = depth => {
 const card = t => `<a class="tcard" href="${'/templates/' + t.slug + '/'}" data-slug="${t.slug}">
   <div class="tthumb ${t.tier}" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div class="tbody">
-    <div class="trow"><span class="tier">${M.tiers[t.tier]}</span><span class="status">Planned</span></div>
+    <div class="trow"><span class="tier">${M.tiers[t.tier]}</span><span class="status">${t.preview_url ? 'Preview available' : 'Planned'}</span></div>
     <h3>${esc(t.name)}</h3>
     <p>${esc(M.categories[t.category])}</p>
     <div class="trow"><span class="price">${eur(t.price)}</span><span class="plat">${t.platforms.map(p => M.platforms[p]).join(' · ')}</span></div>
@@ -97,8 +97,8 @@ for (const t of T) {
           <button type="button" class="on" data-size="desktop" aria-pressed="true">Desktop</button>
           <button type="button" data-size="mobile" aria-pressed="false">Mobile</button>
         </div>
-        <div class="frame" data-size="desktop"><div class="mock-page"><i></i><i></i><i></i><i></i></div></div>
-        <p class="pnote">Live preview is available once this template is verified.</p>
+        <div class="frame" data-size="desktop">${t.preview_url ? `<iframe src="${t.preview_url}" title="${esc(t.name)} preview" loading="lazy" tabindex="-1"></iframe>` : '<div class="mock-page"><i></i><i></i><i></i><i></i></div>'}</div>
+        ${t.preview_url ? `<p class="pnote"><a class="btn btn-primary" href="../../preview/?t=${t.slug}">Open live preview</a></p>` : '<p class="pnote">Live preview is available once this template is verified.</p>'}
       </div>
       <h2 class="sec">About</h2><p class="lead2">${esc(t.summary)}</p>
       <h2 class="sec">Features</h2><ul class="feat">${t.features.map(f => `<li>${esc(f)}</li>`).join('')}</ul>
@@ -217,4 +217,17 @@ for (const [s, name] of legal) write(`legal/${s}/index.html`, head(name, name + 
 <section class="wrap page-head"><p class="eyebrow"><span>Legal</span> ${name}</p><h1>${name}</h1>
 <p class="sub">[Text to be written and reviewed before launch.] Droplates is a product of Guidify, a registered Belgian sole proprietorship.</p></section>` + foot(2));
 
+write('preview/index.html', `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview — Droplates</title><meta name="robots" content="noindex"><link rel="icon" href="../favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../pages.css"></head>
+<body class="pv-body"><header class="pv-bar">
+  <a class="pv-back" href="../templates/" aria-label="Back to templates">← <img src="../logo-mark.png" alt="" width="18" height="18"></a>
+  <p class="pv-name" id="pv-name">Preview</p>
+  <div class="device-switch" role="group" aria-label="Preview size">
+    <button type="button" class="on" data-w="100%" aria-pressed="true">Desktop</button><button type="button" data-w="820px" aria-pressed="false">Tablet</button><button type="button" data-w="390px" aria-pressed="false">Mobile</button>
+  </div>
+  <div class="pv-act"><a class="btn" id="pv-open" href="#" target="_blank" rel="noopener">Open in new tab</a><a class="btn btn-primary" id="pv-info" href="../templates/">Template details</a></div>
+</header>
+<main class="pv-stage"><iframe id="pv-frame" title="Template preview"></iframe><p class="pv-empty" id="pv-empty" hidden>No live preview for this template yet. <a href="../templates/">Back to templates</a>.</p></main>
+<script>window.DROPLATES_DATA = ${JSON.stringify(D)};</script><script src="../pages.js" defer></script></body></html>`);
 console.log('built', T.length, 'product pages');
