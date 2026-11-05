@@ -1,6 +1,8 @@
-/* Droplates template runtime (shared by all free templates). Applies config.js and powers interactions. No dependencies. */
+/* Droplates template runtime v2 (shared by all free templates). Applies config.js and powers interactions. No dependencies.
+ * Config schema 2 = schema 1 + content/links/images/sections overrides. Schema 1 configs are migrated automatically. */
 (function () {
   "use strict";
+  var SCHEMA = 2;
   var FONTS = {
     "Inter": "Inter:wght@400;500;600;700", "Space Grotesk": "Space+Grotesk:wght@400;500;600;700",
     "IBM Plex Sans": "IBM+Plex+Sans:wght@400;500;600;700", "Manrope": "Manrope:wght@400;500;600;700",
@@ -10,26 +12,36 @@
   var PRESETS = (root.dataset.presets || "").split(",").filter(Boolean);
   var HEAD_FONTS = (root.dataset.headFonts || "").split(",").filter(Boolean);
   var ENUMS = { theme: ["dark", "light"], buttons: ["auto", "pill", "rounded", "square"], density: ["compact", "normal", "spacious"] };
+  var KEY_RE = /^[a-z0-9-]{1,40}$/;
+  var IMG_RE = /^(data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+|assets\/[\w\-./]+\.(png|jpe?g|webp|svg))$/;
 
   function get(obj, path) { return path.split(".").reduce(function (o, k) { return o && o[k] !== undefined ? o[k] : undefined; }, obj); }
   function safeUrl(u) { u = String(u || "").trim(); if (/^javascript:/i.test(u)) return ""; return /^(https?:\/\/[^\s<>"]+|mailto:[^\s<>"]+|tel:[+\d\s-]+|#[\w-]*|[\w\-./]+(#[\w-]*)?)$/i.test(u) ? u : ""; }
   function hex(c) { return /^#[0-9a-f]{6}$/i.test(c) ? c : null; }
   function inkFor(c) { var n = parseInt(c.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#0a0a0a" : "#ffffff"; }
+  function obj(x) { return x && typeof x === "object" && !Array.isArray(x) ? x : {}; }
 
-  // Validate a config against the defaults; invalid values fall back to defaults.
+  // Migrate older schemas, then validate against defaults; invalid values fall back to defaults.
+  function migrate(c) {
+    c = JSON.parse(JSON.stringify(obj(c)));
+    if (!c.schema || c.schema < 2) { c.content = obj(c.content); c.links = obj(c.links); c.images = obj(c.images); c.sections = obj(c.sections); c.schema = 2; }
+    return c;
+  }
   function validate(c, d) {
     var out = JSON.parse(JSON.stringify(d));
+    out.schema = SCHEMA; out.content = {}; out.links = {}; out.images = {}; out.sections = {};
     if (!c || typeof c !== "object") return out;
+    c = migrate(c);
     if (PRESETS.indexOf(c.preset) > -1) out.preset = c.preset;
     if (ENUMS.theme.indexOf(c.theme) > -1) out.theme = c.theme;
-    var s = c.style || {};
+    var s = obj(c.style);
     if (hex(s.accent) || s.accent === "") out.style.accent = s.accent;
     if (FONTS[s.font]) out.style.font = s.font;
     if ("headFont" in out.style && (s.headFont === "" || HEAD_FONTS.indexOf(s.headFont) > -1)) out.style.headFont = s.headFont;
     if (ENUMS.buttons.indexOf(s.buttons) > -1) out.style.buttons = s.buttons;
     if (ENUMS.density.indexOf(s.density) > -1) out.style.density = s.density;
     Object.keys(out).forEach(function (g) {
-      if (g === "style" || !out[g] || typeof out[g] !== "object" || !c[g]) return;
+      if (["style", "content", "links", "images", "sections"].indexOf(g) > -1 || !out[g] || typeof out[g] !== "object" || !c[g]) return;
       Object.keys(out[g]).forEach(function (k) {
         var v = c[g][k]; if (typeof v !== "string") return;
         if (k === "logo" && /^data:image\/(png|jpeg|webp|svg\+xml);base64,[a-z0-9+/=]+$/i.test(v) && v.length < 400000) { out[g][k] = v; return; }
@@ -39,11 +51,16 @@
         out[g][k] = v;
       });
     });
+    Object.keys(obj(c.content)).forEach(function (k) { var v = c.content[k]; if (KEY_RE.test(k) && typeof v === "string") out.content[k] = v.slice(0, 2000); });
+    Object.keys(obj(c.links)).forEach(function (k) { var v = safeUrl(c.links[k]); if (KEY_RE.test(k) && v) out.links[k] = v; });
+    Object.keys(obj(c.images)).forEach(function (k) { var v = c.images[k]; if (KEY_RE.test(k) && typeof v === "string" && v.length < 1500000 && IMG_RE.test(v)) out.images[k] = v; });
+    Object.keys(obj(c.sections)).forEach(function (k) { if (KEY_RE.test(k) && obj(c.sections[k]).hidden === true) out.sections[k] = { hidden: true }; });
     return out;
   }
 
-  var DEFAULTS = JSON.parse(JSON.stringify(window.SITE_CONFIG || {}));
+  var DEFAULTS = migrate(window.SITE_CONFIG || {});
   var config = validate(window.SITE_CONFIG, DEFAULTS);
+  var ORIG = new WeakMap(); // original text/href/background per element, so removing an override restores the template default
 
   function loadFont(name) {
     if (!FONTS[name]) return;
@@ -53,6 +70,7 @@
     l.href = "https://fonts.googleapis.com/css2?family=" + FONTS[name] + "&display=swap";
     document.head.appendChild(l);
   }
+  function orig(el, key, val) { var o = ORIG.get(el) || {}; if (!(key in o)) { o[key] = val; ORIG.set(el, o); } return o[key]; }
 
   function apply(c) {
     root.dataset.preset = c.preset; root.dataset.theme = c.theme; root.dataset.density = c.style.density;
@@ -65,12 +83,19 @@
     if (c.style.headFont) { root.style.setProperty("--font-head", '"' + c.style.headFont + '",serif'); loadFont(c.style.headFont); }
     else root.style.removeProperty("--font-head");
     (root.dataset.presetFonts || "").split(",").forEach(loadFont);
-    loadFont("JetBrains Mono" in FONTS ? "" : "");
     document.querySelectorAll("[data-c]").forEach(function (el) { var v = get(c, el.dataset.c); if (typeof v === "string") el.textContent = v; });
     document.querySelectorAll("[data-c-href]").forEach(function (el) {
       var v = get(c, el.dataset.cHref); if (el.dataset.cHref === "contact.email") v = v ? "mailto:" + v : "";
       if (v) { el.href = v; el.hidden = false; } else if (el.hasAttribute("data-optional")) el.hidden = true;
     });
+    document.querySelectorAll("[data-e]").forEach(function (el) { var d = orig(el, "text", el.textContent); var v = c.content[el.dataset.e]; el.textContent = typeof v === "string" ? v : d; });
+    document.querySelectorAll("[data-el]").forEach(function (el) { var d = orig(el, "href", el.getAttribute("href")); el.setAttribute("href", c.links[el.dataset.el] || d); });
+    document.querySelectorAll("[data-ei]").forEach(function (el) {
+      var v = c.images[el.dataset.ei];
+      if (v) { el.style.backgroundImage = 'url("' + v + '")'; el.style.backgroundSize = "cover"; el.style.backgroundPosition = "center"; el.classList.add("has-img"); }
+      else { el.style.backgroundImage = ""; el.classList.remove("has-img"); }
+    });
+    document.querySelectorAll("[data-s]").forEach(function (el) { el.hidden = !!(c.sections[el.dataset.s] && c.sections[el.dataset.s].hidden); });
     document.querySelectorAll(".logo").forEach(function (el) {
       var img = el.querySelector("img"), mark = el.querySelector("i");
       if (c.brand && c.brand.logo) { if (!img) { img = document.createElement("img"); img.alt = ""; el.insertBefore(img, el.firstChild); } img.src = c.brand.logo; if (mark) mark.hidden = true; }
@@ -81,14 +106,73 @@
       document.title = (page ? page + " · " : "") + c.seo.siteName;
       var md = document.querySelector('meta[name="description"]'); if (md) md.content = c.seo.description;
     }
+    if (editing) placeTag();
   }
-  apply(config);
-  window.SITE = { apply: function (c) { config = validate(c, DEFAULTS); apply(config); return config; }, validate: function (c) { return validate(c, DEFAULTS); }, defaults: DEFAULTS, current: function () { return config; } };
+  var imgStyle = document.createElement("style"); imgStyle.textContent = ".has-img{color:transparent!important}"; document.head.appendChild(imgStyle);
 
-  // Live updates from Template Studio (same origin only)
+  /* ---------- Studio edit mode (only active when the Studio asks; never in a downloaded site) ---------- */
+  var editing = false, selected = null, tag = null, studio = window.parent !== window ? window.parent : null;
+  var EDITABLE = "[data-c],[data-e],[data-el],[data-ei]";
+  function send(msg) { if (studio) studio.postMessage(msg, location.origin); }
+  function sectionsInfo() {
+    var seen = {}, list = [];
+    document.querySelectorAll("[data-s]").forEach(function (el) {
+      var id = el.dataset.s; if (seen[id]) return; seen[id] = 1;
+      var keys = [].map.call(document.querySelectorAll('[data-s="' + id + '"] [data-e],[data-s="' + id + '"] [data-el],[data-s="' + id + '"] [data-ei]'), function (x) { return x.dataset.e || x.dataset.el || x.dataset.ei; });
+      list.push({ id: id, label: el.dataset.sLabel || id, optional: el.dataset.sOptional === "true", keys: keys });
+    });
+    return list;
+  }
+  function describe(el) {
+    var sec = el.closest("[data-s]"), info = { section: sec ? sec.dataset.s : null, sectionLabel: sec ? sec.dataset.sLabel : "Header" };
+    if (el.dataset.ei) return Object.assign(info, { kind: "image", key: el.dataset.ei, label: "Image" });
+    if (el.dataset.c) return Object.assign(info, { kind: "config", key: el.dataset.c, label: el.dataset.c, value: el.textContent, hrefKey: el.dataset.cHref || null });
+    var o = ORIG.get(el) || {};
+    var d = Object.assign(info, { kind: el.dataset.el ? "link" : "text", key: el.dataset.e || null, linkKey: el.dataset.el || null, value: el.textContent,
+      defaultValue: o.text, href: el.getAttribute("href"), defaultHref: o.href, label: el.dataset.el ? "Button" : ({ H1: "Heading", H2: "Heading", H3: "Heading", H4: "Heading", P: "Paragraph", LI: "List item", BLOCKQUOTE: "Quote", A: "Link" }[el.tagName] || "Text") });
+    return d;
+  }
+  function placeTag() {
+    if (!tag) return;
+    if (!selected || !document.contains(selected) || selected.closest("[hidden]")) { tag.hidden = true; return; }
+    var r = selected.getBoundingClientRect(); tag.hidden = false;
+    tag.style.top = Math.max(0, r.top + scrollY - 24) + "px"; tag.style.left = Math.max(0, r.left + scrollX - 2) + "px";
+  }
+  function select(el, notify) {
+    if (selected) selected.removeAttribute("data-dp-sel");
+    selected = el; if (!el) { placeTag(); return; }
+    el.setAttribute("data-dp-sel", ""); var d = describe(el); tag.textContent = d.label; placeTag();
+    if (notify) send(Object.assign({ type: "droplates:picked" }, d));
+  }
+  function enableEditing() {
+    if (editing) return; editing = true;
+    var st = document.createElement("style"); st.id = "dp-edit";
+    st.textContent = EDITABLE.split(",").map(function (s) { return s + ":hover"; }).join(",") + "{outline:1px dashed rgba(76,141,255,.75);outline-offset:3px;cursor:pointer}" +
+      "[data-dp-sel]{outline:2px solid #4c8dff!important;outline-offset:3px}" +
+      "#dp-tag{position:absolute;z-index:2147483647;font:500 11px/1 Inter,system-ui,sans-serif;background:#4c8dff;color:#fff;padding:4px 7px;border-radius:4px;pointer-events:none;letter-spacing:0;text-transform:none}";
+    document.head.appendChild(st);
+    tag = document.createElement("div"); tag.id = "dp-tag"; tag.hidden = true; document.body.appendChild(tag);
+    document.querySelectorAll(EDITABLE).forEach(function (el) { if (!el.hasAttribute("tabindex") && !/^(A|BUTTON)$/.test(el.tagName)) el.setAttribute("tabindex", "0"); });
+    document.addEventListener("click", function (e) {
+      var el = e.target.closest(EDITABLE); var a = e.target.closest("a,button[type=submit],[role=tab],.toggle button,[data-f]");
+      if (el) { e.preventDefault(); e.stopPropagation(); select(el, true); } else if (a && a.tagName === "A") e.preventDefault();
+    }, true);
+    document.addEventListener("submit", function (e) { e.preventDefault(); }, true);
+    document.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(EDITABLE)) { e.preventDefault(); select(e.target, true); } });
+    addEventListener("scroll", placeTag, { passive: true }); addEventListener("resize", placeTag);
+  }
+
+  apply(config);
+  window.SITE = { apply: function (c) { config = validate(c, DEFAULTS); apply(config); return config; }, validate: function (c) { return validate(c, DEFAULTS); }, defaults: validate(DEFAULTS, DEFAULTS), current: function () { return config; }, schema: SCHEMA };
+
+  // Messages from Template Studio (same origin only)
   window.addEventListener("message", function (e) {
-    if (e.origin !== location.origin || !e.data || e.data.type !== "droplates:config") return;
-    window.SITE.apply(e.data.config);
+    if (e.origin !== location.origin || !e.data || typeof e.data.type !== "string") return;
+    var m = e.data;
+    if (m.type === "droplates:config") window.SITE.apply(m.config);
+    else if (m.type === "droplates:edit") { enableEditing(); send({ type: "droplates:ready", page: location.pathname.split("/").pop() || "index.html", sections: sectionsInfo() }); }
+    else if (m.type === "droplates:scroll") { var s = document.querySelector('[data-s="' + String(m.section).replace(/[^a-z0-9-]/g, "") + '"]'); if (s && !s.hidden) s.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+    else if (m.type === "droplates:deselect") select(null);
   });
 
   // Mobile menu
@@ -117,7 +201,7 @@
   // Contact form: validates, then sends to config.contact.formEndpoint if set
   var f = document.getElementById("cf"), err = document.getElementById("err");
   if (f) f.addEventListener("submit", function (ev) {
-    ev.preventDefault(); var bad = null;
+    ev.preventDefault(); if (editing) return; var bad = null;
     f.querySelectorAll("[required]").forEach(function (el) {
       var v = el.value.trim(), ok = v && (el.type !== "email" || /^\S+@\S+\.\S+$/.test(v)) && (!(el.minLength > 0) || v.length >= el.minLength);
       el.setAttribute("aria-invalid", !ok); if (!ok && !bad) bad = el;

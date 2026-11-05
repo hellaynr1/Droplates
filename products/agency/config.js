@@ -1,10 +1,10 @@
 /*
  * Site configuration — edit this file to customise your website.
- * Schema version 1. Text values are inserted as plain text (never as HTML).
+ * Schema version 2. Text values are inserted as plain text (never as HTML).
  * Template Studio on droplates.com writes this same file when you download.
  */
 window.SITE_CONFIG = {
-  schema: 1,
+  schema: 2,
   template: "agency",
   edition: "free",
   preset: "contemporary",      // "contemporary" | "corporate" | "studio"
@@ -27,5 +27,11 @@ window.SITE_CONFIG = {
   },
   contact: { email: "hello@example.com", phone: "+32 000 00 00 00", address: "Demo Street 1, Brussels", formEndpoint: "" },
   social: { instagram: "", linkedin: "", behance: "" },
-  seo: { siteName: "Forma", description: "Forma is an independent design and strategy studio." }
+  seo: { siteName: "Forma", description: "Forma is an independent design and strategy studio." },
+
+  // Overrides made in Template Studio (click-to-edit). Keys are element IDs in the HTML (data-e, data-el, data-ei, data-s).
+  content: {},                 // text overrides, e.g. { "index-t3": "New heading" }
+  links: {},                   // button links, e.g. { "index-l1": "pricing.html" }
+  images: {},                  // image placeholders, e.g. { "index-i1": "assets/img-index-i1.jpg" }
+  sections: {}                 // e.g. { "index-s3": { hidden: true } }
 };

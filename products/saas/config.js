@@ -1,10 +1,10 @@
 /*
  * Site configuration — edit this file to customise your website.
- * Schema version 1. Text values are inserted as plain text (never as HTML).
+ * Schema version 2. Text values are inserted as plain text (never as HTML).
  * Template Studio on droplates.com writes this same file when you download.
  */
 window.SITE_CONFIG = {
-  schema: 1,
+  schema: 2,
   template: "saas",
   edition: "free",
   preset: "modern",            // "minimal" | "modern" | "bold"
@@ -28,5 +28,11 @@ window.SITE_CONFIG = {
     formEndpoint: ""           // e.g. a Formspree URL. Empty = form shows a setup notice and sends nothing.
   },
   social: { x: "", linkedin: "", github: "" },
-  seo: { siteName: "Vela", description: "Vela is a product analytics workspace for modern teams." }
+  seo: { siteName: "Vela", description: "Vela is a product analytics workspace for modern teams." },
+
+  // Overrides made in Template Studio (click-to-edit). Keys are element IDs in the HTML (data-e, data-el, data-ei, data-s).
+  content: {},                 // text overrides, e.g. { "index-t3": "New heading" }
+  links: {},                   // button links, e.g. { "index-l1": "pricing.html" }
+  images: {},                  // image placeholders, e.g. { "index-i1": "assets/img-index-i1.jpg" }
+  sections: {}                 // e.g. { "index-s3": { hidden: true } }
 };

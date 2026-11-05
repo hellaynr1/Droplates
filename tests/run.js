@@ -44,11 +44,11 @@ const ok = (cond, msg) => { cond ? pass++ : fail++; console.log((cond ? '  ✓ '
   for (const t of FREE) {
     await p.goto(BASE + 'templates/'); await p.click(`.tcard[data-slug="${t.slug}"]`); await p.waitForLoadState();
     ok(p.url().includes('/templates/' + t.slug + '/'), `${t.slug}: product page opens`);
-    await p.click('text=Customize'); await p.waitForSelector('#form fieldset');
+    await p.click('text=Customize'); await p.waitForSelector('#pages .row'); await p.waitForTimeout(300);
     ok(p.url().includes('studio/?t=' + t.slug), `${t.slug}: Customize opens Studio`);
-    await p.click(`#form .chips button:text-is("${t.presets[1].toLowerCase()}")`); await p.waitForTimeout(300);
+    await p.click('.tabs [data-tab=style]'); await p.click(`#p-style .chips button:text-is("${t.presets[1].toLowerCase()}")`); await p.waitForTimeout(300);
     ok(await p.evaluate(() => document.getElementById('frame').contentDocument.documentElement.dataset.preset) === t.presets[1].toLowerCase(), `${t.slug}: preset applies in preview`);
-    await p.click('#form .chips button:text-is("dark")'); await p.waitForTimeout(200);
+    await p.click('#p-style .chips button:text-is("dark")'); await p.waitForTimeout(200);
     ok(await p.evaluate(() => document.getElementById('frame').contentDocument.documentElement.dataset.theme) === 'dark', `${t.slug}: theme switch`);
     const invalid = await p.evaluate(() => document.getElementById('frame').contentWindow.SITE.validate({ preset: 'nope', theme: 'x', style: { accent: 'red;}body{', font: 'Comic' }, hero: { ctaUrl: 'javascript:alert(1)' } }));
     ok(invalid.preset !== 'nope' && invalid.style.accent !== 'red;}body{' && !/javascript/.test(invalid.hero ? invalid.hero.ctaUrl || '' : ''), `${t.slug}: config validation rejects invalid values`);
@@ -63,8 +63,66 @@ const ok = (cond, msg) => { cond ? pass++ : fail++; console.log((cond ? '  ✓ '
     await q.close();
     // product page Download free button
     await p.goto(BASE + 'templates/' + t.slug + '/');
-    const [dl2] = await Promise.all([p.waitForEvent('download', { timeout: 15000 }), p.click('text=Download free')]);
+    const [dl2] = await Promise.all([p.waitForEvent('download', { timeout: 15000 }), p.click("text=Download free")]);
     ok(!!dl2, `${t.slug}: Download free on product page delivers a ZIP`);
+  }
+
+  console.log('Studio 2.0');
+  {
+    const fr = () => p.evaluate(() => document.getElementById('frame').contentDocument);
+    await p.goto(BASE + 'studio/?t=saas'); await p.evaluate(() => { localStorage.clear(); }); await p.reload(); await p.waitForSelector('#sections .row'); await p.waitForTimeout(500);
+    ok(await p.locator('#sections .row').count() >= 4, 'section manager lists sections');
+    // click-to-edit a text element
+    const key = await p.evaluate(() => document.getElementById('frame').contentDocument.querySelector('[data-e]').dataset.e);
+    await p.frameLocator('#frame').locator(`[data-e="${key}"]`).click();
+    await p.waitForSelector('#p-element textarea');
+    await p.fill('#p-element textarea', 'Edited by test'); await p.waitForTimeout(300);
+    ok(await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-e="${k}"]`).textContent, key) === 'Edited by test', 'click-to-edit updates the preview');
+    await p.fill('#p-element textarea', '<img src=x onerror=alert(1)>'); await p.waitForTimeout(200);
+    ok(await p.evaluate(() => !document.getElementById('frame').contentDocument.querySelector('main img[src="x"]')), 'edited text is never inserted as HTML');
+    await p.fill('#p-element textarea', 'Edited by test'); await p.waitForTimeout(1300);
+    // undo / redo
+    await p.click('#undo'); await p.waitForTimeout(200);
+    const afterUndo = await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-e="${k}"]`).textContent, key);
+    await p.click('#redo'); await p.waitForTimeout(200);
+    const afterRedo = await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-e="${k}"]`).textContent, key);
+    ok(afterUndo !== 'Edited by test' && afterRedo === 'Edited by test', 'undo and redo');
+    // section hide + persistence across pages
+    const sid = await p.evaluate(() => [...document.getElementById('frame').contentDocument.querySelectorAll('[data-s-optional="true"]')][0].dataset.s);
+    await p.click('#sections .row:nth-child(2) .act >> nth=0'); await p.waitForTimeout(200);
+    ok(await p.evaluate(s => document.getElementById('frame').contentDocument.querySelector(`[data-s="${s}"]`).hidden, sid), 'hide section');
+    await p.click('#pages .row:nth-child(2)'); await p.waitForTimeout(1200); await p.click('#pages .row:nth-child(1)'); await p.waitForTimeout(1200);
+    ok(await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-e="${k}"]`).textContent, key) === 'Edited by test', 'edits persist across page switches');
+    // link edit + validation
+    const lk = await p.evaluate(() => document.getElementById('frame').contentDocument.querySelector('[data-el]').dataset.el);
+    await p.frameLocator('#frame').locator(`[data-el="${lk}"]`).click(); await p.waitForTimeout(200);
+    await p.fill('#p-element input[type=text]', 'javascript:alert(1)'); await p.waitForTimeout(200);
+    ok(!/javascript/.test(await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-el="${k}"]`).getAttribute('href'), lk)), 'unsafe link rejected');
+    await p.fill('#p-element input[type=text]', 'about.html'); await p.waitForTimeout(200);
+    ok(await p.evaluate(k => document.getElementById('frame').contentDocument.querySelector(`[data-el="${k}"]`).getAttribute('href'), lk) === 'about.html', 'link edit applied');
+    // brand kit save + apply to other template
+    p.once('dialog', d => d.accept('Test kit'));
+    await p.click('.tabs [data-tab=brand]'); await p.fill('#p-brand input[type=text] >> nth=0', 'KitBrand'); await p.waitForTimeout(300); await p.click('text=Save current as kit'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => JSON.parse(localStorage.getItem('droplates-brandkits')).some(k => k.name === 'Test kit' && k.brand.name === 'KitBrand')), 'brand kit saved');
+    await p.goto(BASE + 'studio/?t=agency'); await p.waitForSelector('#pages .row'); await p.waitForTimeout(500);
+    await p.click('.tabs [data-tab=brand]'); await p.click('.kit:has-text("Test kit") >> text=Apply'); await p.waitForTimeout(300);
+    ok(await p.evaluate(() => document.getElementById('frame').contentDocument.querySelector('[data-c="brand.name"]').textContent) === 'KitBrand', 'brand kit applies to another template');
+    // drafts export -> import round trip
+    await p.click('#drafts-btn'); const [cf] = await Promise.all([p.waitForEvent('download'), p.click('#draft-export')]);
+    const cp = path.join(os.tmpdir(), 'cfg-' + Date.now() + '.json'); await cf.saveAs(cp);
+    const cj = JSON.parse(fs.readFileSync(cp)); ok(cj.droplates === 'config' && cj.config.brand.name === 'KitBrand', 'configuration export');
+    // schema 1 migration
+    const mig = await p.evaluate(() => document.getElementById('frame').contentWindow.SITE.validate({ schema: 1, preset: 'studio', brand: { name: 'Old' } }));
+    ok(mig.schema === 2 && mig.preset === 'studio' && mig.brand.name === 'Old' && typeof mig.content === 'object', 'schema 1 config migrates to schema 2');
+    // export keeps click-to-edit content offline
+    await p.goto(BASE + 'studio/?t=saas'); await p.waitForSelector('#pages .row'); await p.waitForTimeout(500);
+    const [dz] = await Promise.all([p.waitForEvent('download'), p.click('#download')]);
+    const d2 = fs.mkdtempSync(path.join(os.tmpdir(), 'dz2-')); await dz.saveAs(d2 + '/x.zip');
+    execFileSync('python3', ['-c', 'import zipfile,sys;zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])', d2 + '/x.zip', d2]);
+    const q2 = await ctx.newPage(); await q2.goto('file://' + d2 + '/droplates-saas/index.html');
+    ok(await q2.evaluate(k => document.querySelector(`[data-e="${k}"]`).textContent, key) === 'Edited by test' && await q2.evaluate(s => document.querySelector(`[data-s="${s}"]`).hidden, sid), 'exported site keeps edited text and hidden sections');
+    ok(await q2.evaluate(() => !document.getElementById('dp-edit') && !document.getElementById('dp-tag')), 'exported site has no editor UI');
+    await q2.close();
   }
 
   console.log('Mobile');
